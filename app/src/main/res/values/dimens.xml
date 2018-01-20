@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="spacing_normal">8dp</dimen>
+    <dimen name="spacing_micro">4dp</dimen>
+    <dimen name="spacing_large">32dp</dimen>
+    <dimen name="spacing_xlarge">48dp</dimen>
+    <dimen name="spacing_huge">64dp</dimen>
+    <dimen name="padding_margin_normal">16dp</dimen>
+    <dimen name="padding_margin_large">24dp</dimen>
+
+    <dimen name="fav_fab_margin">@dimen/padding_margin_normal</dimen>
+    <dimen name="add_fab_margin">@dimen/padding_margin_normal</dimen>
+</resources>
