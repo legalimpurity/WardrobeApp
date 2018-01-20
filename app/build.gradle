@@ -66,20 +66,8 @@ dependencies {
     //Data Binding
     kapt "com.android.databinding:compiler:$rootProject.databinding"
 
-    // Exoplayer
-    implementation "com.google.android.exoplayer:exoplayer-core:$rootProject.exoPlayer"
-    implementation "com.google.android.exoplayer:exoplayer-ui:$rootProject.exoPlayer"
-
     // Parser
     implementation "com.google.code.gson:gson:$rootProject.gson"
-
-    // retrofit
-    implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofit"
-    implementation "com.jakewharton.retrofit:retrofit2-rxjava2-adapter:$project.rxJavaAdapter"
-
-    // OKHttp
-    compile "com.squareup.okhttp3:okhttp:$rootProject.okhttp"
-    compile "com.squareup.okhttp3:logging-interceptor:$rootProject.okhttp"
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
