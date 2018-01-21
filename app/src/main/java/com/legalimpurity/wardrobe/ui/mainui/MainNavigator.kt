@@ -1,4 +1,4 @@
-package com.legalimpurity.wardrobe.ui.MainUI
+package com.legalimpurity.wardrobe.ui.mainui
 
 import com.legalimpurity.wardrobe.ui.base.BaseNavigator
 

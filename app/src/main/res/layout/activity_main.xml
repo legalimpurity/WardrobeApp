@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.MainUI.MainActivity">
+    tools:context=".ui.mainui.MainActivity">
 
     <data>
 
@@ -10,7 +10,7 @@
 
         <variable
             name="viewModel"
-            type="com.legalimpurity.wardrobe.ui.MainUI.MainViewModel"/>
+            type="com.legalimpurity.wardrobe.ui.mainui.MainViewModel"/>
 
     </data>
 
@@ -27,7 +27,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/ic_launcher_foreground"/>
+            tools:src="@drawable/ic_launcher_foreground"
+            android:visibility='@{ viewModel.shirt_available.equals("") ? View.GONE : View.VISIBLE}'/>
 
         <ImageView
             android:id="@+id/pant_view"
@@ -38,7 +39,31 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/shirt_view"
-            tools:src="@drawable/ic_launcher_foreground"/>
+            tools:src="@drawable/ic_launcher_foreground"
+            android:visibility='@{ viewModel.pant_available.equals("") ? View.GONE : View.VISIBLE}'/>
+
+
+        <TextView
+            android:id="@+id/no_shirt_found"
+            android:text="@{viewModel.shirt_available}"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/pant_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/no_pant_found"
+            android:text="@{viewModel.pant_available}"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/shirt_view"
+            android:gravity="center"/>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_favourite"

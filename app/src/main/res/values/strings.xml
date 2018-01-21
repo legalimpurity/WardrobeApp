@@ -3,4 +3,10 @@
 
     <string name="content_description_shirt_image_view">Shirt Image View</string>
     <string name="content_description_pant_image_view">Pant Image View</string>
+
+    <string name="no_shirt_found">No Shirt Found</string>
+    <string name="no_pant_found">No Pant Found</string>
+
+    <string name="loading_shirts">Loading Shirts</string>
+    <string name="loading_pants">Loading Pants</string>
 </resources>

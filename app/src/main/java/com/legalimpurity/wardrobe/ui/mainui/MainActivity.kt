@@ -1,4 +1,4 @@
-package com.legalimpurity.wardrobe.ui.MainUI
+package com.legalimpurity.wardrobe.ui.mainui
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -26,6 +26,8 @@ class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNa
         super.onCreate(savedInstanceState)
         mActivityMainBinding = getViewDataBinding()
         mMainViewModel.setNavigator(this)
+        mMainViewModel.pant_available.set(getString(R.string.loading_pants))
+        mMainViewModel.shirt_available.set(getString(R.string.loading_shirts))
     }
 
     // Functions to be implemented by every Activity
