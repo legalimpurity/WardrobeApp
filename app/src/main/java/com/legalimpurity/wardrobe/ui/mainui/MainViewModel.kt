@@ -42,7 +42,6 @@ class MainViewModel(dataManager: DataManager, schedulerProvider: SchedulerProvid
                 .observeOn(getSchedulerProvider().ui())
                 .subscribe({ timeTableDataResponse ->
                     shirtsLiveData.value = timeTableDataResponse
-                    shirt_available.set("")
                 }, { throwable ->
                     getNavigator()?.apiError(throwable)
                 }))

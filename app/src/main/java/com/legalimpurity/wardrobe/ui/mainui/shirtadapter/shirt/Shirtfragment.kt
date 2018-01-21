@@ -35,7 +35,7 @@ class Shirtfragment : BaseFragment<FragmentShirtBinding, ShirtViewModel>()
         super.onViewCreated(view, savedInstanceState)
         mFragmentShirtBinding = getViewDataBinding()
         arguments.getParcelable<ShirtNPant>(ShirtNPant_OBJ)?.let {
-            Picasso.with(this.context).load(Uri.parse(it.shirtnPantPath)).into(mFragmentShirtBinding?.itemImageView)
+            Picasso.with(this.context).load(Uri.parse(it.shirtnPantPath)).fit().centerCrop().into(mFragmentShirtBinding?.itemImageView)
         }
     }
 

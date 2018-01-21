@@ -23,15 +23,15 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             style="@style/shirtImageView"
+            android:visibility='@{ viewModel.shirt_available.equals("") ? View.VISIBLE : View.INVISIBLE}'
             app:adapter="@{viewModel.shirtDataObservableArrayList}"/>
 
-        <!--android:visibility='@{ viewModel.shirt_available.equals("") ? View.GONE : View.VISIBLE}'-->
 
         <android.support.v4.view.ViewPager
             android:id="@+id/pantViewPager"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:visibility='@{ viewModel.shirt_available.equals("") ? View.GONE : View.VISIBLE}'
+            android:visibility='@{ viewModel.pant_available.equals("") ? View.VISIBLE : View.INVISIBLE}'
             style="@style/pantImageView"/>
 
         <TextView
@@ -40,6 +40,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             style="@style/shirtImageView"
+            android:visibility='@{ viewModel.shirt_available.equals("") ? View.INVISIBLE : View.VISIBLE}'
             android:gravity="center"/>
 
         <TextView
@@ -48,6 +49,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             style="@style/pantImageView"
+            android:visibility='@{ viewModel.pant_available.equals("") ? View.INVISIBLE : View.VISIBLE}'
             android:gravity="center"/>
 
         <android.support.design.widget.FloatingActionButton

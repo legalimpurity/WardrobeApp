@@ -10,6 +10,9 @@
     <string name="loading_shirts">Loading Shirts</string>
     <string name="loading_pants">Loading Pants</string>
 
+    <string name="no_shirts_added">No Shirts Added</string>
+    <string name="no_pants_added">No Pants Added</string>
+
     <string name="provider_path_authority" translatable="false">com.legalimpurity.wardrobe.wardrobeprovider</string>
     <string name="storage_path" translatable="false">WardrobePictures/</string>
     <string name="storage_path_without_slash" translatable="false">WardrobePictures</string>

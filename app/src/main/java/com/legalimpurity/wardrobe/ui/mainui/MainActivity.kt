@@ -74,7 +74,13 @@ class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNa
 
     private fun subscribeToLiveData()
     {
-        mMainViewModel.shirtsLiveData.observe(this, Observer<List<ShirtNPant>> { timeTableData -> timeTableData?.let{ mMainViewModel.addShirtsToList(it) } })
+        mMainViewModel.shirtsLiveData.observe(this, Observer<List<ShirtNPant>> {
+            timeTableData -> timeTableData?.let{ mMainViewModel.addShirtsToList(it)
+            if(timeTableData.isEmpty())
+                mMainViewModel.shirt_available.set(getString(R.string.no_shirts_added))
+            else
+                mMainViewModel.shirt_available.set("")
+        } })
     }
 
     // Functions to be implemented by every Activity
