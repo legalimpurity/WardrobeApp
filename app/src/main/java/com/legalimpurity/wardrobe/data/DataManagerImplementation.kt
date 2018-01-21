@@ -11,6 +11,6 @@ import javax.inject.Inject
  */
 class DataManagerImplementation @Inject constructor(val preferencesHelper: PreferenceHelper, val databaseHelper: DatabaseHelper): DataManager
 {
-    override fun getLocalShirts(): Observable<List<ShirtNPant>> = databaseHelper.getLocalShirts()
+    override fun getLocalShirts(code: Int): Observable<List<ShirtNPant>> = databaseHelper.getLocalShirts(code)
     override fun addAShirt(shirt: ShirtNPant): Observable<Boolean> = databaseHelper.addAShirt(shirt)
 }

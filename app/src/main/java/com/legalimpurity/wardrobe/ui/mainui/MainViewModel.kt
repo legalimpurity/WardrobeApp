@@ -16,10 +16,10 @@ class MainViewModel(dataManager: DataManager, schedulerProvider: SchedulerProvid
 {
 
     val shirtDataObservableArrayList = ObservableArrayList<ShirtNPant>()
-//    private val pantsDataObservableArrayList = ObservableArrayList<ShirtNPant>()
+    val pantsDataObservableArrayList = ObservableArrayList<ShirtNPant>()
 
     val shirtsLiveData: MutableLiveData<List<ShirtNPant>> = MutableLiveData()
-//    private val pantsLiveData: MutableLiveData<List<ShirtNPant>> = MutableLiveData()
+    val pantsLiveData: MutableLiveData<List<ShirtNPant>> = MutableLiveData()
 
     val shirt_available = ObservableField<String>()
     val pant_available = ObservableField<String>()
@@ -30,18 +30,35 @@ class MainViewModel(dataManager: DataManager, schedulerProvider: SchedulerProvid
     var shirtOrPantPic = 0
     var tempPicturePath = ""
 
-    fun addShirtsToList(timeTableData: List<ShirtNPant>) {
+    fun addShirtsToList(shirtsData: List<ShirtNPant>) {
         shirtDataObservableArrayList.clear()
-        shirtDataObservableArrayList.addAll(timeTableData)
+        shirtDataObservableArrayList.addAll(shirtsData)
+    }
+
+    fun addPantsToList(pantsData: List<ShirtNPant>) {
+        pantsDataObservableArrayList.clear()
+        pantsDataObservableArrayList.addAll(pantsData)
     }
 
     fun fetchShirtsListMix() {
         getCompositeDisposable()?.add(getDataManager()
-                .getLocalShirts()
+                .getLocalShirts(1)
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
-                .subscribe({ timeTableDataResponse ->
-                    shirtsLiveData.value = timeTableDataResponse
+                .subscribe({ shirtsDataResponse ->
+                    shirtsLiveData.value = shirtsDataResponse
+                }, { throwable ->
+                    getNavigator()?.apiError(throwable)
+                }))
+    }
+
+    fun fetchPantsListMix() {
+        getCompositeDisposable()?.add(getDataManager()
+                .getLocalShirts(2)
+                .subscribeOn(getSchedulerProvider().io())
+                .observeOn(getSchedulerProvider().ui())
+                .subscribe({ pantsDataResponse ->
+                    pantsLiveData.value = pantsDataResponse
                 }, { throwable ->
                     getNavigator()?.apiError(throwable)
                 }))

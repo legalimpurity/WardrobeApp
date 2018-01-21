@@ -11,7 +11,7 @@ import javax.inject.Singleton
 @Singleton
 class DatabaseHelperImplementation @Inject constructor(private val mAppDatabase: AppDatabase) : DatabaseHelper
 {
-    override fun getLocalShirts() = Observable.fromCallable<List<ShirtNPant>> { mAppDatabase.ShirtsDao().loadAll() }
+    override fun getLocalShirts(code: Int) = Observable.fromCallable<List<ShirtNPant>> { mAppDatabase.ShirtsDao().loadByCode(code) }
 
     override fun addAShirt(shirt: ShirtNPant) = Observable.fromCallable {
         mAppDatabase.ShirtsDao().insert(shirt)

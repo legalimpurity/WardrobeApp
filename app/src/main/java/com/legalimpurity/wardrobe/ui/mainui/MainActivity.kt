@@ -47,6 +47,7 @@ class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNa
     @Inject lateinit var fragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
 
     @Inject lateinit var mShirtAdapter : ShirtAdapter
+    @Inject lateinit var mPantAdapter : ShirtAdapter
 
     private var mActivityMainBinding: ActivityMainBinding? = null
 
@@ -55,9 +56,11 @@ class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNa
         mActivityMainBinding = getViewDataBinding()
         mMainViewModel.setNavigator(this)
         mMainViewModel.fetchShirtsListMix()
+        mMainViewModel.fetchPantsListMix()
         mMainViewModel.pant_available.set(getString(R.string.loading_pants))
         mMainViewModel.shirt_available.set(getString(R.string.loading_shirts))
         setShirtAdapter()
+        setPantAdapter()
         subscribeToLiveData()
     }
 
@@ -82,14 +85,43 @@ class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNa
         })
     }
 
+    // Initialize and set adapter
+    private fun setPantAdapter()
+    {
+        mActivityMainBinding?.pantViewPager?.adapter = mPantAdapter
+
+        // Get
+//        mActivityMainBinding?.shirtViewPager?.setCurrentItem(getViewModel().getAppColor(),true)
+
+        mActivityMainBinding?.pantViewPager?.addOnPageChangeListener(object : ViewPager.OnPageChangeListener
+        {
+            override fun onPageScrollStateChanged(state: Int) {
+            }
+
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+            }
+
+            override fun onPageSelected(position: Int) {
+            }
+        })
+    }
+
     private fun subscribeToLiveData()
     {
         mMainViewModel.shirtsLiveData.observe(this, Observer<List<ShirtNPant>> {
-            timeTableData -> timeTableData?.let{ mMainViewModel.addShirtsToList(it)
-            if(timeTableData.isEmpty())
+            shirtData -> shirtData?.let{ mMainViewModel.addShirtsToList(it)
+            if(shirtData.isEmpty())
                 mMainViewModel.shirt_available.set(getString(R.string.no_shirts_added))
             else
                 mMainViewModel.shirt_available.set("")
+        } })
+
+        mMainViewModel.pantsLiveData.observe(this, Observer<List<ShirtNPant>> {
+            pantData -> pantData?.let{ mMainViewModel.addPantsToList(it)
+            if(pantData.isEmpty())
+                mMainViewModel.pant_available.set(getString(R.string.no_pants_added))
+            else
+                mMainViewModel.pant_available.set("")
         } })
     }
 
@@ -110,8 +142,8 @@ class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNa
     }
 
     override fun openAddder() {
-//        dispatchTakePictureIntent()
-        dispatchGetFromGalleryIntent()
+        dispatchTakePictureIntent()
+//        dispatchGetFromGalleryIntent()
     }
 
     // Image Capturing Functions

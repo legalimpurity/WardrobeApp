@@ -8,6 +8,6 @@ import io.reactivex.Observable
  */
 interface DatabaseHelper
 {
-    fun getLocalShirts(): Observable<List<ShirtNPant>>
+    fun getLocalShirts(code:Int): Observable<List<ShirtNPant>>
     fun addAShirt(shirt: ShirtNPant): Observable<Boolean>
 }

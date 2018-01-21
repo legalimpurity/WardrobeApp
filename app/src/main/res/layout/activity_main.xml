@@ -32,7 +32,8 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:visibility='@{ viewModel.pant_available.equals("") ? View.VISIBLE : View.INVISIBLE}'
-            style="@style/pantImageView"/>
+            style="@style/pantImageView"
+            app:adapter="@{viewModel.pantsDataObservableArrayList}"/>
 
         <TextView
             android:id="@+id/no_shirt_found"

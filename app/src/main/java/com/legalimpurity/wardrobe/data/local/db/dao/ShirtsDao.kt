@@ -14,6 +14,9 @@ interface ShirtsDao
     @Query("SELECT * FROM Shirts")
     fun loadAll(): List<ShirtNPant>
 
+    @Query("SELECT * FROM Shirts WHERE shirtOrPant = :code")
+    fun loadByCode(code: Int?): List<ShirtNPant>
+
     @Insert()
     fun insert(shirt: ShirtNPant)
 }
