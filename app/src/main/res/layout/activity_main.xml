@@ -23,24 +23,18 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:contentDescription="@string/content_description_shirt_image_view"
-            app:layout_constraintBottom_toTopOf="@+id/pant_view"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/ic_launcher_foreground"
-            android:visibility='@{ viewModel.shirt_available.equals("") ? View.GONE : View.VISIBLE}'/>
+            android:visibility='@{ viewModel.shirt_available.equals("") ? View.GONE : View.VISIBLE}'
+            style="@style/shirtImageView"/>
 
         <ImageView
             android:id="@+id/pant_view"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:contentDescription="@string/content_description_pant_image_view"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/shirt_view"
             tools:src="@drawable/ic_launcher_foreground"
-            android:visibility='@{ viewModel.pant_available.equals("") ? View.GONE : View.VISIBLE}'/>
+            android:visibility='@{ viewModel.pant_available.equals("") ? View.GONE : View.VISIBLE}'
+            style="@style/pantImageView"/>
 
 
         <TextView
@@ -48,10 +42,7 @@
             android:text="@{viewModel.shirt_available}"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/pant_view"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            style="@style/shirtImageView"
             android:gravity="center"/>
 
         <TextView
@@ -59,59 +50,38 @@
             android:text="@{viewModel.pant_available}"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/shirt_view"
+            style="@style/pantImageView"
             android:gravity="center"/>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_favourite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/fav_fab_margin"
-            android:layout_marginRight="@dimen/fav_fab_margin"
-            app:layout_anchor="@id/pant_view"
-            app:layout_anchorGravity="end"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_favorite_black_24dp"/>
+            app:srcCompat="@drawable/ic_favorite_black_24dp"
+            style="@style/fabFavStyle"/>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_shuffle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_anchor="@id/pant_view"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_sync_black_24dp" />
+            app:srcCompat="@drawable/ic_sync_black_24dp"
+            style="@style/fabShuffleStyle"/>
 
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/add_shirt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/add_fab_margin"
-            android:layout_marginEnd="@dimen/add_fab_margin"
-            android:layout_marginRight="@dimen/add_fab_margin"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_add_black_24dp"/>
+            app:srcCompat="@drawable/ic_add_black_24dp"
+            style="@style/fabAddShirtStyle"/>
 
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/add_pant"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/add_fab_margin"
-            android:layout_marginEnd="@dimen/add_fab_margin"
-            android:layout_marginRight="@dimen/add_fab_margin"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:srcCompat="@drawable/ic_add_black_24dp" />
+            app:srcCompat="@drawable/ic_add_black_24dp"
+            style="@style/fabAddPantStyle"/>
 
     </android.support.constraint.ConstraintLayout>
 

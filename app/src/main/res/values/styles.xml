@@ -8,4 +8,50 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="shirtImageView">
+        <item name="layout_constraintBottom_toTopOf">@+id/pant_view</item>
+        <item name="layout_constraintEnd_toEndOf">parent</item>
+        <item name="layout_constraintStart_toStartOf">parent</item>
+        <item name="layout_constraintTop_toTopOf">parent</item>
+    </style>
+
+    <style name="pantImageView">
+        <item name="layout_constraintTop_toBottomOf">@+id/shirt_view</item>
+        <item name="layout_constraintBottom_toBottomOf">parent</item>
+        <item name="layout_constraintEnd_toEndOf">parent</item>
+        <item name="layout_constraintStart_toStartOf">parent</item>
+    </style>
+
+    <style name="fabFavStyle">
+        <item name="layout_constraintBottom_toBottomOf">parent</item>
+        <item name="layout_constraintRight_toRightOf">parent</item>
+        <item name="layout_constraintTop_toTopOf">parent</item>
+        <item name="android:layout_marginEnd">@dimen/fav_fab_margin</item>
+        <item name="android:layout_marginRight">@dimen/fav_fab_margin</item>
+    </style>
+
+    <style name="fabShuffleStyle">
+        <item name="layout_constraintBottom_toBottomOf">parent</item>
+        <item name="layout_constraintRight_toRightOf">parent</item>
+        <item name="layout_constraintTop_toTopOf">parent</item>
+        <item name="layout_constraintLeft_toLeftOf">parent</item>
+    </style>
+
+    <style name="fabAddShirtStyle">
+        <item name="layout_constraintRight_toRightOf">parent</item>
+        <item name="layout_constraintTop_toTopOf">parent</item>
+        <item name="android:layout_marginTop">@dimen/add_fab_margin</item>
+        <item name="android:layout_marginEnd">@dimen/add_fab_margin</item>
+        <item name="android:layout_marginRight">@dimen/add_fab_margin</item>
+    </style>
+
+    <style name="fabAddPantStyle">
+        <item name="layout_constraintRight_toRightOf">parent</item>
+        <item name="layout_constraintBottom_toBottomOf">parent</item>
+        <item name="android:layout_marginBottom">@dimen/add_fab_margin</item>
+        <item name="android:layout_marginEnd">@dimen/add_fab_margin</item>
+        <item name="android:layout_marginRight">@dimen/add_fab_margin</item>
+    </style>
+
+
 </resources>

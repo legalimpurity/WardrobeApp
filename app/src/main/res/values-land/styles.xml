@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="shirtImageView">
+        <item name="layout_constraintEnd_toStartOf">@+id/pant_view</item>
+        <item name="layout_constraintBottom_toBottomOf">parent</item>
+        <item name="layout_constraintStart_toStartOf">parent</item>
+        <item name="layout_constraintTop_toTopOf">parent</item>
+    </style>
+
+    <style name="pantImageView">
+        <item name="layout_constraintStart_toEndOf">@+id/shirt_view</item>
+        <item name="layout_constraintBottom_toBottomOf">parent</item>
+        <item name="layout_constraintEnd_toEndOf">parent</item>
+        <item name="layout_constraintTop_toTopOf">parent</item>
+    </style>
+
+    <style name="fabFavStyle">
+        <item name="layout_constraintBottom_toBottomOf">parent</item>
+        <item name="layout_constraintRight_toRightOf">parent</item>
+        <item name="layout_constraintLeft_toLeftOf">parent</item>
+        <item name="android:layout_marginBottom">@dimen/fav_fab_margin</item>
+    </style>
+
+    <style name="fabAddShirtStyle">
+        <item name="layout_constraintLeft_toLeftOf">parent</item>
+        <item name="layout_constraintTop_toTopOf">parent</item>
+        <item name="android:layout_marginTop">@dimen/add_fab_margin</item>
+        <item name="android:layout_marginStart">@dimen/add_fab_margin</item>
+        <item name="android:layout_marginLeft">@dimen/add_fab_margin</item>
+    </style>
+
+    <style name="fabAddPantStyle">
+        <item name="layout_constraintRight_toRightOf">parent</item>
+        <item name="layout_constraintTop_toTopOf">parent</item>
+        <item name="android:layout_marginTop">@dimen/add_fab_margin</item>
+        <item name="android:layout_marginEnd">@dimen/add_fab_margin</item>
+        <item name="android:layout_marginRight">@dimen/add_fab_margin</item>
+    </style>
+
+</resources>
