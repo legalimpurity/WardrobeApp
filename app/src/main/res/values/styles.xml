@@ -9,14 +9,14 @@
     </style>
 
     <style name="shirtImageView">
-        <item name="layout_constraintBottom_toTopOf">@+id/pant_view</item>
+        <item name="layout_constraintBottom_toTopOf">@+id/pantViewPager</item>
         <item name="layout_constraintEnd_toEndOf">parent</item>
         <item name="layout_constraintStart_toStartOf">parent</item>
         <item name="layout_constraintTop_toTopOf">parent</item>
     </style>
 
     <style name="pantImageView">
-        <item name="layout_constraintTop_toBottomOf">@+id/shirt_view</item>
+        <item name="layout_constraintTop_toBottomOf">@+id/shirtViewPager</item>
         <item name="layout_constraintBottom_toBottomOf">parent</item>
         <item name="layout_constraintEnd_toEndOf">parent</item>
         <item name="layout_constraintStart_toStartOf">parent</item>

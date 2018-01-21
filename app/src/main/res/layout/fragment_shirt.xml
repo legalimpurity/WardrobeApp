@@ -7,7 +7,7 @@
         <import type="android.view.View" />
         <variable
             name="viewModel"
-            type="com.legalimpurity.wardrobe.ui.mainui.shirtadapter.shirt." />
+            type="com.legalimpurity.wardrobe.ui.mainui.shirtadapter.shirt.ShirtViewModel" />
     </data>
 
 
@@ -15,5 +15,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/item_image_view"
+        />
 </android.support.constraint.ConstraintLayout>
 </layout>

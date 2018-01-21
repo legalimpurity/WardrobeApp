@@ -3,7 +3,7 @@ package com.legalimpurity.wardrobe.data.local.db.dao
 import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.Query
-import com.legalimpurity.wardrobe.data.models.Shirt
+import com.legalimpurity.wardrobe.data.models.ShirtNPant
 
 /**
  * Created by rajatkhanna on 20/01/18.
@@ -12,8 +12,8 @@ import com.legalimpurity.wardrobe.data.models.Shirt
 interface ShirtsDao
 {
     @Query("SELECT * FROM Shirts")
-    fun loadAll(): List<Shirt>
+    fun loadAll(): List<ShirtNPant>
 
     @Insert()
-    fun insert(shirt: Shirt)
+    fun insert(shirt: ShirtNPant)
 }

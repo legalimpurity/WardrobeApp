@@ -1,7 +1,6 @@
 package com.legalimpurity.wardrobe.data.local.db
 
-import com.legalimpurity.wardrobe.data.models.Pant
-import com.legalimpurity.wardrobe.data.models.Shirt
+import com.legalimpurity.wardrobe.data.models.ShirtNPant
 import io.reactivex.Observable
 
 /**
@@ -9,9 +8,6 @@ import io.reactivex.Observable
  */
 interface DatabaseHelper
 {
-    fun getLocalShirts(): Observable<List<Shirt>>
-    fun getLocalPants(): Observable<List<Pant>>
-
-    fun addAPant(pant: Pant): Observable<Boolean>
-    fun addAShirt(shirt: Shirt): Observable<Boolean>
+    fun getLocalShirts(): Observable<List<ShirtNPant>>
+    fun addAShirt(shirt: ShirtNPant): Observable<Boolean>
 }

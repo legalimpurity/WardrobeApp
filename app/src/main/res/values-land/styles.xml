@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="shirtImageView">
-        <item name="layout_constraintEnd_toStartOf">@+id/pant_view</item>
+        <item name="layout_constraintEnd_toStartOf">@+id/pantViewPager</item>
         <item name="layout_constraintBottom_toBottomOf">parent</item>
         <item name="layout_constraintStart_toStartOf">parent</item>
         <item name="layout_constraintTop_toTopOf">parent</item>
     </style>
 
     <style name="pantImageView">
-        <item name="layout_constraintStart_toEndOf">@+id/shirt_view</item>
+        <item name="layout_constraintStart_toEndOf">@+id/shirtViewPager</item>
         <item name="layout_constraintBottom_toBottomOf">parent</item>
         <item name="layout_constraintEnd_toEndOf">parent</item>
         <item name="layout_constraintTop_toTopOf">parent</item>

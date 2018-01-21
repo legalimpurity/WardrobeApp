@@ -2,6 +2,7 @@ package com.legalimpurity.wardrobe.di
 
 import com.legalimpurity.wardrobe.ui.mainui.MainActivity
 import com.legalimpurity.wardrobe.ui.mainui.MainModule
+import com.legalimpurity.wardrobe.ui.mainui.shirtadapter.shirt.ShirtFragmentProvider
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -11,6 +12,6 @@ import dagger.android.ContributesAndroidInjector
 @Module
 abstract class BuildersModule
 {
-    @ContributesAndroidInjector(modules = [MainModule::class])
-    abstract fun bindSplashActivity() : MainActivity
+    @ContributesAndroidInjector(modules = [MainModule::class, ShirtFragmentProvider::class])
+    abstract fun bindMainActivity() : MainActivity
 }
