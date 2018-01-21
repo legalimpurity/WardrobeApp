@@ -12,7 +12,7 @@ import dagger.android.AndroidInjection
 /**
  * Created by rajatkhanna on 21/01/18.
  */
-abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel<out BaseNavigator>>: AppCompatActivity() {
+abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel<out BaseNavigator>>: AppCompatActivity(), BaseFragment.Callbacks {
 
     private lateinit var mViewDataBinding: T
     private lateinit var mViewModel: V
@@ -45,6 +45,13 @@ abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel<out BaseNavig
     abstract fun getBindingVariable() : Int
     @LayoutRes
     abstract fun getLayoutId() : Int
+
+    // Fragment Functions
+    override fun onFragmentAttached() {
+    }
+
+    override fun onFragmentDetached(tag: String) {
+    }
 
     // snackbarActionClicker is -1 in case of no action
     fun showMsg(errorString: Int, actionString: Int, snackbarActionClicker: (actionButView: View) -> Unit)
