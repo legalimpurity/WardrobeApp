@@ -39,6 +39,7 @@ import javax.inject.Inject
  */
 class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNavigator, HasSupportFragmentInjector
 {
+
     val REQUEST_IMAGE_CAPTURE = 1
     val RESULT_LOAD_IMAGE = 2
 
@@ -144,6 +145,13 @@ class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNa
     override fun openAddder() {
         dispatchTakePictureIntent()
 //        dispatchGetFromGalleryIntent()
+    }
+
+    override fun updateAdapter(code: Int) {
+        if(code == 1)
+            mShirtAdapter.notifyDataSetChanged()
+        else
+            mPantAdapter.notifyDataSetChanged()
     }
 
     // Image Capturing Functions

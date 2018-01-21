@@ -8,4 +8,5 @@ import com.legalimpurity.wardrobe.ui.base.BaseNavigator
 interface MainNavigator : BaseNavigator
 {
     fun openAddder()
+    fun updateAdapter(code: Int)
 }

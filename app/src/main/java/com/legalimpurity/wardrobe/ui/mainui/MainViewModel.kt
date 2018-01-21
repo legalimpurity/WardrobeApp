@@ -86,7 +86,11 @@ class MainViewModel(dataManager: DataManager, schedulerProvider: SchedulerProvid
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
                 .subscribe({
-
+                    if(shirtOrPantPic == 1)
+                        fetchShirtsListMix()
+                    else(shirtOrPantPic == 2)
+                        fetchPantsListMix()
+                    getNavigator()?.updateAdapter(shirtOrPantPic)
                 }))
     }
 
