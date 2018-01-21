@@ -3,6 +3,7 @@ package com.legalimpurity.wardrobe.ui.mainui
 import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.support.v4.app.Fragment
@@ -19,10 +20,18 @@ import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
+
+
+
+
+
+
 
 
 /**
@@ -31,6 +40,7 @@ import javax.inject.Inject
 class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNavigator, HasSupportFragmentInjector
 {
     val REQUEST_IMAGE_CAPTURE = 1
+    val RESULT_LOAD_IMAGE = 2
 
     @Inject lateinit var mMainViewModel: MainViewModel
 
@@ -100,7 +110,8 @@ class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNa
     }
 
     override fun openAddder() {
-        dispatchTakePictureIntent()
+//        dispatchTakePictureIntent()
+        dispatchGetFromGalleryIntent()
     }
 
     // Image Capturing Functions
@@ -123,6 +134,17 @@ class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNa
         // Save a file: path for use with ACTION_VIEW intents
         mCurrentPhotoPath = image.absolutePath
         return image
+    }
+
+    @Throws(IOException::class)
+    private fun copyFile(sourceStream: FileInputStream, destFile: File) {
+            val inStream = sourceStream as FileInputStream
+            val outStream = FileOutputStream(destFile)
+            val inChannel = inStream.getChannel()
+            val outChannel = outStream.getChannel()
+            inChannel.transferTo(0, inChannel.size(), outChannel)
+            inStream.close()
+            outStream.close()
     }
 
     fun dispatchTakePictureIntent()
@@ -149,15 +171,40 @@ class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNa
         }
     }
 
+    fun dispatchGetFromGalleryIntent()
+    {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+            intent.addCategory(Intent.CATEGORY_OPENABLE)
+            intent.type = "image/*"
+            startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1)
+        } else {
+            val intent = Intent()
+            intent.type = "image/*"
+            intent.action = Intent.ACTION_GET_CONTENT
+            startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1)
+        }
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode == REQUEST_IMAGE_CAPTURE)
         {
             mMainViewModel.pictureAdded()
         }
+        else if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && data != null) {
+            var newFile = createImageFile()
+            if (newFile.exists())
+            {
+                try {
+//                    getPath(this,requestCode)
+//                    copyFile(contentResolver.openInputStream(data.getData()), newFile)
+                    mMainViewModel.pictureAdded()
+                } catch (e: IOException) {
+                    AppLogger.d(e.localizedMessage)
+                }
+            }
+        }
     }
-
-
-
 
 }
