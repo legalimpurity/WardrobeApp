@@ -7,5 +7,6 @@ import com.legalimpurity.wardrobe.ui.base.BaseNavigator
  */
 interface MainNavigator : BaseNavigator
 {
-
+    fun addShirt()
+    fun addPant()
 }

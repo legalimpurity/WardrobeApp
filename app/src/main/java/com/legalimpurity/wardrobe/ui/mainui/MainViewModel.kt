@@ -13,4 +13,14 @@ class MainViewModel(dataManager: DataManager, schedulerProvider: SchedulerProvid
 {
     val shirt_available = ObservableField<String>()
     val pant_available = ObservableField<String>()
+
+    fun addPantPicture()
+    {
+        getNavigator()?.addPant()
+    }
+
+    fun addShirtPicture()
+    {
+        getNavigator()?.addShirt()
+    }
 }
