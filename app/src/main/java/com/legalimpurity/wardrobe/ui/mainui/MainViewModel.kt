@@ -21,6 +21,9 @@ class MainViewModel(dataManager: DataManager, schedulerProvider: SchedulerProvid
     val shirtsLiveData: MutableLiveData<List<ShirtNPant>> = MutableLiveData()
     val pantsLiveData: MutableLiveData<List<ShirtNPant>> = MutableLiveData()
 
+    val shirtBeingViewedPosition: MutableLiveData<Int> = MutableLiveData()
+    val pantBeingViewedPosition: MutableLiveData<Int> = MutableLiveData()
+
     val shirt_available = ObservableField<String>()
     val pant_available = ObservableField<String>()
 
@@ -30,6 +33,12 @@ class MainViewModel(dataManager: DataManager, schedulerProvider: SchedulerProvid
     var shirtOrPantPic = 0
     var tempPicturePath = ""
 
+    init {
+        fetchShirtsListMix()
+        fetchPantsListMix()
+        fetchPositions()
+    }
+
     fun addShirtsToList(shirtsData: List<ShirtNPant>) {
         shirtDataObservableArrayList.clear()
         shirtDataObservableArrayList.addAll(shirtsData)
@@ -38,6 +47,12 @@ class MainViewModel(dataManager: DataManager, schedulerProvider: SchedulerProvid
     fun addPantsToList(pantsData: List<ShirtNPant>) {
         pantsDataObservableArrayList.clear()
         pantsDataObservableArrayList.addAll(pantsData)
+    }
+
+    fun fetchPositions()
+    {
+        shirtBeingViewedPosition.value = getDataManager().getLastShirtSelected()
+        pantBeingViewedPosition.value = getDataManager().getLastPantSelected()
     }
 
     fun fetchShirtsListMix() {
@@ -97,5 +112,18 @@ class MainViewModel(dataManager: DataManager, schedulerProvider: SchedulerProvid
     fun pictureCreated(pictureURI: String)
     {
         tempPicturePath = pictureURI
+    }
+
+    // We can rely on positions cause there is no delete functionality in the app.
+    fun setPantPosBeingSeen(pos:Int)
+    {
+        getDataManager().setLastPantSelected(pos)
+        shirtBeingViewedPosition.value = pos
+    }
+
+    fun setShirtPosBeingSeen(pos:Int)
+    {
+        getDataManager().setLastShirtSelected(pos)
+        pantBeingViewedPosition.value = pos
     }
 }

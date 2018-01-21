@@ -11,6 +11,12 @@ import javax.inject.Inject
  */
 class DataManagerImplementation @Inject constructor(val preferencesHelper: PreferenceHelper, val databaseHelper: DatabaseHelper): DataManager
 {
+    override fun getLastShirtSelected() = preferencesHelper.getLastShirtSelected()
+    override fun setLastShirtSelected(pos: Int) = preferencesHelper.setLastShirtSelected(pos)
+
+    override fun getLastPantSelected() = preferencesHelper.getLastPantSelected()
+    override fun setLastPantSelected(pos: Int) = preferencesHelper.setLastPantSelected(pos)
+
     override fun getLocalShirts(code: Int): Observable<List<ShirtNPant>> = databaseHelper.getLocalShirts(code)
     override fun addAShirt(shirt: ShirtNPant): Observable<Boolean> = databaseHelper.addAShirt(shirt)
 }

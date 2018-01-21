@@ -5,9 +5,9 @@ package com.legalimpurity.wardrobe.data.local.prefs
  */
 interface PreferenceHelper
 {
-//    fun getLastShirtSelected(): Int
-//    fun setLastShirtSelected(pos: Int)
+    fun getLastShirtSelected(): Int
+    fun setLastShirtSelected(pos: Int)
 
-//    fun getLastPantSelected(): Int
-//    fun setLastPantSelected(pos: Int)
+    fun getLastPantSelected(): Int
+    fun setLastPantSelected(pos: Int)
 }

@@ -56,8 +56,6 @@ class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNa
         super.onCreate(savedInstanceState)
         mActivityMainBinding = getViewDataBinding()
         mMainViewModel.setNavigator(this)
-        mMainViewModel.fetchShirtsListMix()
-        mMainViewModel.fetchPantsListMix()
         mMainViewModel.pant_available.set(getString(R.string.loading_pants))
         mMainViewModel.shirt_available.set(getString(R.string.loading_shirts))
         setShirtAdapter()
@@ -69,10 +67,7 @@ class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNa
     private fun setShirtAdapter()
     {
         mActivityMainBinding?.shirtViewPager?.adapter = mShirtAdapter
-
-        // Get
-//        mActivityMainBinding?.shirtViewPager?.setCurrentItem(getViewModel().getAppColor(),true)
-
+        mActivityMainBinding?.shirtViewPager?.offscreenPageLimit = 3
         mActivityMainBinding?.shirtViewPager?.addOnPageChangeListener(object : ViewPager.OnPageChangeListener
         {
             override fun onPageScrollStateChanged(state: Int) {
@@ -82,6 +77,7 @@ class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNa
             }
 
             override fun onPageSelected(position: Int) {
+                mMainViewModel.setShirtPosBeingSeen(position)
             }
         })
     }
@@ -90,10 +86,7 @@ class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNa
     private fun setPantAdapter()
     {
         mActivityMainBinding?.pantViewPager?.adapter = mPantAdapter
-
-        // Get
-//        mActivityMainBinding?.shirtViewPager?.setCurrentItem(getViewModel().getAppColor(),true)
-
+        mActivityMainBinding?.pantViewPager?.offscreenPageLimit = 3
         mActivityMainBinding?.pantViewPager?.addOnPageChangeListener(object : ViewPager.OnPageChangeListener
         {
             override fun onPageScrollStateChanged(state: Int) {
@@ -103,6 +96,7 @@ class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNa
             }
 
             override fun onPageSelected(position: Int) {
+                mMainViewModel.setPantPosBeingSeen(position)
             }
         })
     }
@@ -110,20 +104,43 @@ class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNa
     private fun subscribeToLiveData()
     {
         mMainViewModel.shirtsLiveData.observe(this, Observer<List<ShirtNPant>> {
-            shirtData -> shirtData?.let{ mMainViewModel.addShirtsToList(it)
+            shirtData -> shirtData?.let{
+            mMainViewModel.addShirtsToList(it)
+
+            getViewModel().shirtBeingViewedPosition.value?.let {
+                mActivityMainBinding?.shirtViewPager?.setCurrentItem(it,true)
+            }
+
             if(shirtData.isEmpty())
                 mMainViewModel.shirt_available.set(getString(R.string.no_shirts_added))
             else
                 mMainViewModel.shirt_available.set("")
-        } })
+            }
+
+            mActivityMainBinding?.shirtViewPager?.postDelayed(Runnable {
+                getViewModel().shirtBeingViewedPosition.value?.let {
+                    mActivityMainBinding?.shirtViewPager?.setCurrentItem(it,true)
+                }
+            }, 1000)
+
+        })
 
         mMainViewModel.pantsLiveData.observe(this, Observer<List<ShirtNPant>> {
-            pantData -> pantData?.let{ mMainViewModel.addPantsToList(it)
+            pantData -> pantData?.let{
+            mMainViewModel.addPantsToList(it)
+
+
             if(pantData.isEmpty())
                 mMainViewModel.pant_available.set(getString(R.string.no_pants_added))
             else
                 mMainViewModel.pant_available.set("")
-        } })
+            }
+            mActivityMainBinding?.pantViewPager?.postDelayed(Runnable {
+                getViewModel().pantBeingViewedPosition.value?.let {
+                    mActivityMainBinding?.pantViewPager?.setCurrentItem(it,true)
+                }
+            }, 1000)
+        })
     }
 
     // Functions to be implemented by every Activity
