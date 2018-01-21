@@ -4,6 +4,7 @@ import android.arch.lifecycle.MutableLiveData
 import android.databinding.ObservableArrayList
 import android.databinding.ObservableField
 import com.legalimpurity.wardrobe.data.DataManager
+import com.legalimpurity.wardrobe.data.models.FavCombo
 import com.legalimpurity.wardrobe.data.models.ShirtNPant
 import com.legalimpurity.wardrobe.di.modules.appmoduleprovides.rx.SchedulerProvider
 import com.legalimpurity.wardrobe.ui.base.BaseViewModel
@@ -21,8 +22,8 @@ class MainViewModel(dataManager: DataManager, schedulerProvider: SchedulerProvid
     val shirtsLiveData: MutableLiveData<List<ShirtNPant>> = MutableLiveData()
     val pantsLiveData: MutableLiveData<List<ShirtNPant>> = MutableLiveData()
 
-    val shirtBeingViewedPosition: MutableLiveData<Int> = MutableLiveData()
-    val pantBeingViewedPosition: MutableLiveData<Int> = MutableLiveData()
+    var shirtBeingViewedPosition: Int = 0
+    var pantBeingViewedPosition: Int = 0
 
     val shirt_available = ObservableField<String>()
     val pant_available = ObservableField<String>()
@@ -51,8 +52,8 @@ class MainViewModel(dataManager: DataManager, schedulerProvider: SchedulerProvid
 
     fun fetchPositions()
     {
-        shirtBeingViewedPosition.value = getDataManager().getLastShirtSelected()
-        pantBeingViewedPosition.value = getDataManager().getLastPantSelected()
+        shirtBeingViewedPosition = getDataManager().getLastShirtSelected()
+        pantBeingViewedPosition = getDataManager().getLastPantSelected()
     }
 
     fun fetchShirtsListMix() {
@@ -118,12 +119,29 @@ class MainViewModel(dataManager: DataManager, schedulerProvider: SchedulerProvid
     fun setPantPosBeingSeen(pos:Int)
     {
         getDataManager().setLastPantSelected(pos)
-        shirtBeingViewedPosition.value = pos
+        shirtBeingViewedPosition = pos
     }
 
     fun setShirtPosBeingSeen(pos:Int)
     {
         getDataManager().setLastShirtSelected(pos)
-        pantBeingViewedPosition.value = pos
+        pantBeingViewedPosition = pos
+    }
+
+    fun favCombo()
+    {
+        if(shirt_available.get() == "" && pant_available.get() == "") {
+            val favCombo = FavCombo()
+            favCombo.pant_id = pantsDataObservableArrayList[pantBeingViewedPosition].id
+            favCombo.shirt_id = shirtDataObservableArrayList[shirtBeingViewedPosition].id
+            getCompositeDisposable()?.add(getDataManager()
+                    .addFavCombos(favCombo)
+                    .subscribeOn(getSchedulerProvider().io())
+                    .observeOn(getSchedulerProvider().ui())
+                    .subscribe({
+                    }))
+        }
+        else
+            getNavigator()?.apiError(Throwable("BookMarkBeforeAddingDataNotAllowed"))
     }
 }

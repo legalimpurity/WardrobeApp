@@ -107,20 +107,14 @@ class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNa
             shirtData -> shirtData?.let{
             mMainViewModel.addShirtsToList(it)
 
-            getViewModel().shirtBeingViewedPosition.value?.let {
-                mActivityMainBinding?.shirtViewPager?.setCurrentItem(it,true)
-            }
-
             if(shirtData.isEmpty())
                 mMainViewModel.shirt_available.set(getString(R.string.no_shirts_added))
             else
                 mMainViewModel.shirt_available.set("")
             }
 
-            mActivityMainBinding?.shirtViewPager?.postDelayed(Runnable {
-                getViewModel().shirtBeingViewedPosition.value?.let {
-                    mActivityMainBinding?.shirtViewPager?.setCurrentItem(it,true)
-                }
+            mActivityMainBinding?.shirtViewPager?.postDelayed({
+                mActivityMainBinding?.shirtViewPager?.setCurrentItem(getViewModel().shirtBeingViewedPosition,true)
             }, 1000)
 
         })
@@ -135,10 +129,8 @@ class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNa
             else
                 mMainViewModel.pant_available.set("")
             }
-            mActivityMainBinding?.pantViewPager?.postDelayed(Runnable {
-                getViewModel().pantBeingViewedPosition.value?.let {
-                    mActivityMainBinding?.pantViewPager?.setCurrentItem(it,true)
-                }
+            mActivityMainBinding?.pantViewPager?.postDelayed({
+                mActivityMainBinding?.pantViewPager?.setCurrentItem(getViewModel().pantBeingViewedPosition,true)
             }, 1000)
         })
     }
@@ -169,6 +161,10 @@ class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNa
             mShirtAdapter.notifyDataSetChanged()
         else
             mPantAdapter.notifyDataSetChanged()
+    }
+
+    override fun bookMarkCurrentCombo() {
+        mActivityMainBinding?.fabFavourite?.setImageDrawable(resources.getDrawable(R.drawable.ic_favorite_black_24dp))
     }
 
     // Image Capturing Functions

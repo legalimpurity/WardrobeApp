@@ -9,4 +9,5 @@ interface MainNavigator : BaseNavigator
 {
     fun openAddder()
     fun updateAdapter(code: Int)
+    fun bookMarkCurrentCombo()
 }
