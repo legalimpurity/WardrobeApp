@@ -11,7 +11,6 @@ import com.legalimpurity.wardrobe.R
 import com.legalimpurity.wardrobe.databinding.ActivityMainBinding
 import com.legalimpurity.wardrobe.ui.base.BaseActivity
 import com.legalimpurity.wardrobe.util.AppLogger
-import com.squareup.picasso.Picasso
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
@@ -59,11 +58,7 @@ class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNa
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun addShirt() {
-        dispatchTakePictureIntent()
-    }
-
-    override fun addPant() {
+    override fun openAddder() {
         dispatchTakePictureIntent()
     }
 
@@ -106,20 +101,22 @@ class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNa
                 var photoURI: Uri = FileProvider.getUriForFile(this,
                 getString(R.string.provider_path_authority),
                 photoFile)
-                photoURII = photoURI
+                mMainViewModel.pictureCreated(photoURI.toString())
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
             }
         }
     }
 
-    // edge scenario, what if device is rotated for taking a picture.
-    var photoURII: Uri? = null
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode == REQUEST_IMAGE_CAPTURE)
-            Picasso.with(this).load(photoURII).into(mActivityMainBinding?.shirtView)
+        {
+            mMainViewModel.pictureAdded()
+        }
     }
+
+
+
 
 }
