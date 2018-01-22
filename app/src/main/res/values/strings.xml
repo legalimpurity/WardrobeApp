@@ -20,6 +20,7 @@
     <string name="bookmarks">Bookmarks</string>
     <string name="random">Random</string>
     <string name="shuffle_error">Minimum one shirt and one pant should be there, before we try to shuffle.</string>
+    <string name="notifications_string">Good morning, here is a cool new outfit for you.</string>
 
     <string name="add_image">Add Image</string>
     <string name="how_image">How would you like to add the image?</string>

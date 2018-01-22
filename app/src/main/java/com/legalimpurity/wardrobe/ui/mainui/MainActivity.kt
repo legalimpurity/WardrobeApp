@@ -242,12 +242,18 @@ class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNa
             val broadcast = PendingIntent.getBroadcast(this, 100, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
             val cal = Calendar.getInstance()
+            // If todays 6 am has already passed, it will notify gain tommorow.
+            if(cal.get(Calendar.HOUR_OF_DAY) >= 6)
+                cal.add(Calendar.DATE, 1)
+
+            // Set time to 6am
             cal.set(Calendar.HOUR_OF_DAY, 6)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 it.setExact(AlarmManager.RTC_WAKEUP, cal.timeInMillis, broadcast)
             }
             else
                 it.set(AlarmManager.RTC_WAKEUP, cal.timeInMillis, broadcast)
+            it.setRepeating(AlarmManager.RTC, cal.timeInMillis, AlarmManager.INTERVAL_DAY, broadcast)
         }
     }
 

@@ -2,8 +2,6 @@ package com.legalimpurity.wardrobe.util.services
 
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.arch.lifecycle.Lifecycle
-import android.arch.lifecycle.LifecycleOwner
 import android.arch.persistence.room.Room
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -33,12 +31,8 @@ import io.reactivex.functions.BiFunction
 /**
  * Created by root on 22/1/18.
  */
-class AlarmReceiver : BroadcastReceiver(), LifecycleOwner
+class AlarmReceiver : BroadcastReceiver()
 {
-    override fun getLifecycle(): Lifecycle {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
     override fun onReceive(context: Context?, p1: Intent?) {
         val notificationIntent = Intent(context, MainActivity::class.java)
 
@@ -51,7 +45,6 @@ class AlarmReceiver : BroadcastReceiver(), LifecycleOwner
         val notificationBuilder = NotificationCompat.Builder(context)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle(context?.getString(R.string.app_name))
-                .setContentText("asd")
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
 
@@ -90,11 +83,13 @@ class AlarmReceiver : BroadcastReceiver(), LifecycleOwner
                                 R.drawable.ic_launcher_foreground),BitmapFactory.decodeResource(context.resources,
                                 R.drawable.ic_launcher_foreground))
                 }
+
                 .observeOn(sp.ui())
                 .subscribe({ bitmap: Array<Bitmap> ->
-                        notificationBuilder.setLargeIcon(bitmap[0])
-                        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-                        notificationManager.notify(0, notificationBuilder.build())
+                    notificationBuilder.setLargeIcon(bitmap[0])
+                    notificationBuilder.setContentText(context.getString(R.string.notifications_string))
+                    val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                    notificationManager.notify(0, notificationBuilder.build())
                 }))
 
     }
