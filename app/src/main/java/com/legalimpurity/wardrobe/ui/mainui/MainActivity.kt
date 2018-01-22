@@ -9,6 +9,7 @@ import android.provider.MediaStore
 import android.support.v4.app.Fragment
 import android.support.v4.content.FileProvider
 import android.support.v4.view.ViewPager
+import android.widget.Toast
 import com.legalimpurity.wardrobe.BR
 import com.legalimpurity.wardrobe.R
 import com.legalimpurity.wardrobe.data.models.ShirtNPant
@@ -114,8 +115,8 @@ class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNa
             }
 
             mActivityMainBinding?.shirtViewPager?.postDelayed({
-                mActivityMainBinding?.shirtViewPager?.setCurrentItem(getViewModel().shirtBeingViewedPosition,true)
-            }, 1000)
+                mActivityMainBinding?.shirtViewPager?.setCurrentItem(getViewModel().shirtBeingViewedPosition,false)
+            }, 100)
 
         })
 
@@ -130,8 +131,8 @@ class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNa
                 mMainViewModel.pant_available.set("")
             }
             mActivityMainBinding?.pantViewPager?.postDelayed({
-                mActivityMainBinding?.pantViewPager?.setCurrentItem(getViewModel().pantBeingViewedPosition,true)
-            }, 1000)
+                mActivityMainBinding?.pantViewPager?.setCurrentItem(getViewModel().pantBeingViewedPosition,false)
+            }, 100)
         })
     }
 
@@ -148,7 +149,8 @@ class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNa
 
     // Navigator Functions
     override fun apiError(throwable: Throwable) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        if(throwable.message == "BookMarkBeforeAddingDataNotAllowed")
+            Toast.makeText(this,getString(R.string.bookmark_error),Toast.LENGTH_LONG).show()
     }
 
     override fun openAddder() {

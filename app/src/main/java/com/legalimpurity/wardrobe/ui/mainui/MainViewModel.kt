@@ -132,13 +132,14 @@ class MainViewModel(dataManager: DataManager, schedulerProvider: SchedulerProvid
     {
         if(shirt_available.get() == "" && pant_available.get() == "") {
             val favCombo = FavCombo()
-            favCombo.pant_id = pantsDataObservableArrayList[pantBeingViewedPosition].id
-            favCombo.shirt_id = shirtDataObservableArrayList[shirtBeingViewedPosition].id
+            favCombo.pant_id = pantsDataObservableArrayList[pantBeingViewedPosition-1].id
+            favCombo.shirt_id = shirtDataObservableArrayList[shirtBeingViewedPosition-1].id
             getCompositeDisposable()?.add(getDataManager()
                     .addFavCombos(favCombo)
                     .subscribeOn(getSchedulerProvider().io())
                     .observeOn(getSchedulerProvider().ui())
                     .subscribe({
+                        getNavigator()?.bookMarkCurrentCombo()
                     }))
         }
         else
