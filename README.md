@@ -25,5 +25,5 @@ Requiremenets :
 
 WireFrames :
 
-[First WireFrame]: https://github.com/legalimpurity/WardrobeApp/blob/master/IMG_3899.JPG.JPG "First WireFrame"
-[Second WireFrame]: https://github.com/legalimpurity/WardrobeApp/blob/master/IMG_3900.JPG "Second WireFrame"
+[First WireFrame]: https://raw.githubusercontent.com/legalimpurity/WardrobeApp/master/IMG_3899.JPG "First WireFrame"
+[Second WireFrame]: https://raw.githubusercontent.com/legalimpurity/WardrobeApp/master/IMG_3900.JPG "Second WireFrame"
