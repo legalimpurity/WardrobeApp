@@ -1,6 +1,7 @@
 package com.legalimpurity.wardrobe.ui.mainui
 
 import android.app.AlarmManager
+import android.app.AlertDialog
 import android.app.PendingIntent
 import android.arch.lifecycle.Observer
 import android.content.Context
@@ -43,7 +44,6 @@ import javax.inject.Inject
  */
 class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNavigator, HasSupportFragmentInjector
 {
-
     val REQUEST_IMAGE_CAPTURE = 1
     val RESULT_LOAD_IMAGE = 2
 
@@ -177,6 +177,25 @@ class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNa
     {
         mActivityMainBinding?.pantViewPager?.setCurrentItem(pant_code,true)
         mActivityMainBinding?.shirtViewPager?.setCurrentItem(shirt_code,true)
+    }
+
+    override fun askWhichRandom() {
+        var builder: AlertDialog.Builder? = null
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert)
+        } else {
+            builder = AlertDialog.Builder(this)
+        }
+        builder.setTitle(getString(R.string.how_shuffle))
+        .setMessage(getString(R.string.how_shuffle))
+        .setPositiveButton(R.string.bookmarks,   { dialog, which ->
+                mMainViewModel.getRandomFavourite()
+         })
+        .setNegativeButton(R.string.random,  { dialog, which ->
+            mMainViewModel.getCompletelyRandom()
+         })
+        .setIcon(android.R.drawable.ic_dialog_alert)
+        .show()
     }
 
     // Image Capturing Functions

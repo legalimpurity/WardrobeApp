@@ -13,7 +13,10 @@ interface DatabaseHelper
 {
     fun getLocalShirts(code:Int): Observable<List<ShirtNPant>>
     fun getShirtsAndPantsCount(): Observable<Int>
+    fun getFavsCount(): Observable<Int>
     fun getFavCombos(): Observable<List<FavCombo>>
+    fun getFavComboAtPos(pos: Int): Observable<FavCombo>
+
     fun addFavCombos(favCombo: FavCombo): Observable<Boolean>
     fun addAShirt(shirt: ShirtNPant): Observable<Boolean>
     fun checkRandomCombo(randomCombo: RandomCombo): Single<RandomCombo>

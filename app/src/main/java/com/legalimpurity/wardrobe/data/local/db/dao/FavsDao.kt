@@ -4,7 +4,6 @@ import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.Query
 import com.legalimpurity.wardrobe.data.models.FavCombo
-import com.legalimpurity.wardrobe.data.models.ShirtNPant
 
 /**
  * Created by root on 22/1/18.
@@ -14,6 +13,12 @@ interface FavsDao
 {
     @Query("SELECT * FROM Favs")
     fun loadAll(): List<FavCombo>
+
+    @Query("SELECT count(*) FROM Favs")
+    fun getCount(): Int
+
+    @Query("SELECT * FROM Favs WHERE id = :pos limit 1")
+    fun loadByPos(pos: Int?): FavCombo
 
     @Insert()
     fun insert(favCombo: FavCombo)

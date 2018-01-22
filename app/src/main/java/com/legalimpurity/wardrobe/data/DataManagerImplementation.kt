@@ -6,8 +6,7 @@ import com.legalimpurity.wardrobe.data.models.FavCombo
 import com.legalimpurity.wardrobe.data.models.RandomCombo
 import com.legalimpurity.wardrobe.data.models.ShirtNPant
 import io.reactivex.Observable
-import java.util.Random
-import java.util.function.BiFunction
+import java.util.*
 import javax.inject.Inject
 
 /**
@@ -25,7 +24,7 @@ class DataManagerImplementation @Inject constructor(val preferencesHelper: Prefe
             })
             .toObservable()
 
-    override fun giveRandomComboNotGivenBefore(): Observable<RandomCombo> = databaseHelper.getShirtsAndPantsCount()
+    override fun giveRandomComboNotGivenBefore() = databaseHelper.getShirtsAndPantsCount()
             .map { countt ->
                 val returner = RandomCombo()
                 val maxNumberOfCombinations = countt * (countt-1)/2
@@ -48,6 +47,16 @@ class DataManagerImplementation @Inject constructor(val preferencesHelper: Prefe
 //            .toObservable()
 
 
+    override fun giveRandomFavCombo() = databaseHelper.getFavsCount()
+            .map { countt ->
+                val rnd = Random()
+                rnd.nextInt(countt)
+            }
+            .map { randomNumberPos ->
+                getFavComboAtPos(randomNumberPos).blockingFirst()
+            }
+
+
     override fun getLastShirtSelected() = preferencesHelper.getLastShirtSelected()
     override fun setLastShirtSelected(pos: Int) = preferencesHelper.setLastShirtSelected(pos)
 
@@ -56,6 +65,8 @@ class DataManagerImplementation @Inject constructor(val preferencesHelper: Prefe
 
     override fun getLocalShirts(code: Int) = databaseHelper.getLocalShirts(code)
     override fun getShirtsAndPantsCount() = databaseHelper.getShirtsAndPantsCount()
+    override fun getFavsCount() = databaseHelper.getFavsCount()
+    override fun getFavComboAtPos(pos:Int) = databaseHelper.getFavComboAtPos(pos)
     override fun getFavCombos() = databaseHelper.getFavCombos()
     override fun checkRandomCombo(randomCombo: RandomCombo) = databaseHelper.checkRandomCombo(randomCombo)
     override fun addFavCombos(favCombo: FavCombo) = databaseHelper.addFavCombos(favCombo)

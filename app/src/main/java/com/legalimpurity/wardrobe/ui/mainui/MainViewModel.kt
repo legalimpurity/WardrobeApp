@@ -148,6 +148,22 @@ class MainViewModel(dataManager: DataManager, schedulerProvider: SchedulerProvid
 
     fun getRandom()
     {
+        getNavigator()?.askWhichRandom()
+    }
+
+    fun getCompletelyRandom()
+    {
+        getCompositeDisposable()?.add(getDataManager()
+                .giveRandomComboNotGivenBefore()
+                .subscribeOn(getSchedulerProvider().io())
+                .observeOn(getSchedulerProvider().ui())
+                .subscribe({
+                    getNavigator()?.setRandomCombo(it.shirt_id,it.pant_id)
+                }))
+    }
+
+    fun getRandomFavourite()
+    {
         getCompositeDisposable()?.add(getDataManager()
                 .giveRandomComboNotGivenBefore()
                 .subscribeOn(getSchedulerProvider().io())
