@@ -1,6 +1,9 @@
 package com.legalimpurity.wardrobe.ui.mainui
 
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.arch.lifecycle.Observer
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -62,6 +65,7 @@ class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNa
         setShirtAdapter()
         setPantAdapter()
         subscribeToLiveData()
+        setupNotificationAt6am()
     }
 
     // Initialize and set adapter
@@ -259,6 +263,27 @@ class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNa
                     AppLogger.d(e.localizedMessage)
                 }
             }
+        }
+    }
+
+    // Notification Code
+
+    fun setupNotificationAt6am()
+    {
+        val alarmManager: AlarmManager? = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarmManager?.let {
+            val notificationIntent = Intent("android.media.action.DISPLAY_NOTIFICATION")
+            notificationIntent.addCategory("android.intent.category.DEFAULT")
+
+            val broadcast = PendingIntent.getBroadcast(this, 100, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+
+            val cal = Calendar.getInstance()
+            cal.set(Calendar.HOUR_OF_DAY, 10)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                it.setExact(AlarmManager.RTC_WAKEUP, cal.timeInMillis, broadcast)
+            }
+            else
+                it.set(AlarmManager.RTC_WAKEUP, cal.timeInMillis, broadcast)
         }
     }
 

@@ -29,6 +29,13 @@
                 android:resource="@xml/file_paths"/>
         </provider>
 
+        <receiver android:name=".util.services.AlarmReceiver">
+            <intent-filter>
+                <action android:name="android.media.action.DISPLAY_NOTIFICATION" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
     <uses-feature android:name="android.hardware.camera"
