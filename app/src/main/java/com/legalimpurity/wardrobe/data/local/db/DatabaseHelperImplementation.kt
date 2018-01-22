@@ -28,9 +28,12 @@ class DatabaseHelperImplementation @Inject constructor(private val mAppDatabase:
     override fun getLocalShirts(code: Int) = Observable.fromCallable<List<ShirtNPant>> { mAppDatabase.ShirtsDao().loadByCode(code) }
     override fun getShirtsAndPantsCount() = Observable.fromCallable<Int> { mAppDatabase.ShirtsDao().getCount() }
 
+    override fun getTypeCount(code:Int) = Observable.fromCallable<Int> { mAppDatabase.ShirtsDao().getTypeCount(code) }
+
     override fun addAShirt(shirt: ShirtNPant) = Observable.fromCallable {
         mAppDatabase.ShirtsDao().insert(shirt)
         true
     }
 
+    override fun getShirtPantAtPos(id:Int) = Observable.fromCallable<ShirtNPant> { mAppDatabase.ShirtsDao().loadById(id) }
 }

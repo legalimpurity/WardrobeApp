@@ -6,6 +6,7 @@ import com.legalimpurity.wardrobe.data.models.FavCombo
 import com.legalimpurity.wardrobe.data.models.RandomCombo
 import com.legalimpurity.wardrobe.data.models.ShirtNPant
 import io.reactivex.Observable
+import io.reactivex.functions.BiFunction
 import java.util.*
 import javax.inject.Inject
 
@@ -14,6 +15,7 @@ import javax.inject.Inject
  */
 class DataManagerImplementation @Inject constructor(val preferencesHelper: PreferenceHelper, val databaseHelper: DatabaseHelper): DataManager
 {
+
     override fun checkRandomComboNotExist(randomCombo: RandomCombo) = databaseHelper.checkRandomCombo(randomCombo)
             .map {
                 false
@@ -29,8 +31,9 @@ class DataManagerImplementation @Inject constructor(val preferencesHelper: Prefe
                 val returner = RandomCombo()
                 val maxNumberOfCombinations = countt * (countt-1)/2
                 val rnd = Random()
-                val rand1 = rnd.nextInt(countt)
-                val rand2 = rnd.nextInt(countt)
+                // autoincrement starts from 1
+                val rand1 = rnd.nextInt(countt - 1) + 1
+                val rand2 = rnd.nextInt(countt - 1) + 1
                 returner.pant_id = rand1
                 returner.shirt_id = rand2
                 returner
@@ -40,11 +43,13 @@ class DataManagerImplementation @Inject constructor(val preferencesHelper: Prefe
 //                        checkRandomComboNotExist(randomCombo),
 //                        Observable.just<RandomCombo>(randomCombo),
 //                        BiFunction { existNotExist:Boolean, randomCombo2:RandomCombo ->
-//                            randomCombo2
+//                            if(existNotExist)
+//                                randomCombo2
+//                            else
+//                                giveRandomComboNotGivenBefore()
 //                        }
 //                )
 //            }
-//            .toObservable()
 
 
     override fun giveRandomFavCombo() = databaseHelper.getFavsCount()
@@ -56,6 +61,20 @@ class DataManagerImplementation @Inject constructor(val preferencesHelper: Prefe
                 getFavComboAtPos(randomNumberPos).blockingFirst()
             }
 
+    // Minimum one shirt and one pant should be there, before we try to shuffle.
+    override fun canWeGiveShuffle() = Observable.zip(
+            databaseHelper.getTypeCount(1)
+                    .map { count ->
+                        count != 0
+                    },
+            databaseHelper.getTypeCount(2)
+                    .map { count ->
+                        count != 0
+                    },
+            BiFunction { shirtsAreThere: Boolean, pantsAreThere: Boolean ->
+                shirtsAreThere && pantsAreThere
+            }
+    )
 
     override fun getLastShirtSelected() = preferencesHelper.getLastShirtSelected()
     override fun setLastShirtSelected(pos: Int) = preferencesHelper.setLastShirtSelected(pos)
@@ -64,8 +83,10 @@ class DataManagerImplementation @Inject constructor(val preferencesHelper: Prefe
     override fun setLastPantSelected(pos: Int) = preferencesHelper.setLastPantSelected(pos)
 
     override fun getLocalShirts(code: Int) = databaseHelper.getLocalShirts(code)
+    override fun getShirtPantAtPos(pos: Int) = databaseHelper.getShirtPantAtPos(pos)
     override fun getShirtsAndPantsCount() = databaseHelper.getShirtsAndPantsCount()
     override fun getFavsCount() = databaseHelper.getFavsCount()
+    override fun getTypeCount(code: Int) = databaseHelper.getTypeCount(code)
     override fun getFavComboAtPos(pos:Int) = databaseHelper.getFavComboAtPos(pos)
     override fun getFavCombos() = databaseHelper.getFavCombos()
     override fun checkRandomCombo(randomCombo: RandomCombo) = databaseHelper.checkRandomCombo(randomCombo)

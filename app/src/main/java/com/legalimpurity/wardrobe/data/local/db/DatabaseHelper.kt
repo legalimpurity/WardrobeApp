@@ -12,7 +12,9 @@ import io.reactivex.Single
 interface DatabaseHelper
 {
     fun getLocalShirts(code:Int): Observable<List<ShirtNPant>>
+    fun getShirtPantAtPos(id:Int): Observable<ShirtNPant>
     fun getShirtsAndPantsCount(): Observable<Int>
+    fun getTypeCount(code:Int): Observable<Int>
     fun getFavsCount(): Observable<Int>
     fun getFavCombos(): Observable<List<FavCombo>>
     fun getFavComboAtPos(pos: Int): Observable<FavCombo>

@@ -149,6 +149,8 @@ class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNa
     override fun apiError(throwable: Throwable) {
         if(throwable.message == "BookMarkBeforeAddingDataNotAllowed")
             Toast.makeText(this,getString(R.string.bookmark_error),Toast.LENGTH_LONG).show()
+        else if(throwable.message == "NoShuffleWithoutData")
+            Toast.makeText(this,getString(R.string.shuffle_error),Toast.LENGTH_LONG).show()
     }
 
     override fun openAddder() {

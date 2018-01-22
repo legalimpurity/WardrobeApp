@@ -148,7 +148,16 @@ class MainViewModel(dataManager: DataManager, schedulerProvider: SchedulerProvid
 
     fun getRandom()
     {
-        getNavigator()?.askWhichRandom()
+        getCompositeDisposable()?.add(getDataManager()
+            .canWeGiveShuffle()
+            .subscribeOn(getSchedulerProvider().io())
+            .observeOn(getSchedulerProvider().ui())
+            .subscribe({ wecan ->
+                if(wecan)
+                    getNavigator()?.askWhichRandom()
+                else
+                    getNavigator()?.apiError(Throwable("NoShuffleWithoutData"))
+            }))
     }
 
     fun getCompletelyRandom()

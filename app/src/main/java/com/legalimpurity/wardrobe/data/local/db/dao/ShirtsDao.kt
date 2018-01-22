@@ -17,8 +17,14 @@ interface ShirtsDao
     @Query("SELECT count(*) FROM Shirts")
     fun getCount(): Int
 
+    @Query("SELECT count(*) FROM Shirts WHERE shirtOrPant = :code")
+    fun getTypeCount(code: Int?): Int
+
     @Query("SELECT * FROM Shirts WHERE shirtOrPant = :code")
     fun loadByCode(code: Int?): List<ShirtNPant>
+
+    @Query("SELECT * FROM Shirts WHERE id = :id limit 1")
+    fun loadById(id: Int?): ShirtNPant
 
     @Insert()
     fun insert(shirt: ShirtNPant)
