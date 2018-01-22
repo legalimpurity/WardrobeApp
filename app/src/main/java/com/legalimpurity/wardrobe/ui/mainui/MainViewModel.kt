@@ -145,4 +145,15 @@ class MainViewModel(dataManager: DataManager, schedulerProvider: SchedulerProvid
         else
             getNavigator()?.apiError(Throwable("BookMarkBeforeAddingDataNotAllowed"))
     }
+
+    fun getRandom()
+    {
+        getCompositeDisposable()?.add(getDataManager()
+                .giveRandomComboNotGivenBefore()
+                .subscribeOn(getSchedulerProvider().io())
+                .observeOn(getSchedulerProvider().ui())
+                .subscribe({
+                    getNavigator()?.setRandomCombo(it.shirt_id,it.pant_id)
+                }))
+    }
 }

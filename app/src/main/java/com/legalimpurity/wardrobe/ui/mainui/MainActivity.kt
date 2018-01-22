@@ -173,6 +173,12 @@ class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNa
         mActivityMainBinding?.fabFavourite?.setImageDrawable(resources.getDrawable(R.drawable.ic_favorite_black_24dp))
     }
 
+    override fun setRandomCombo(shirt_code: Int, pant_code:Int)
+    {
+        mActivityMainBinding?.pantViewPager?.setCurrentItem(pant_code,true)
+        mActivityMainBinding?.shirtViewPager?.setCurrentItem(shirt_code,true)
+    }
+
     // Image Capturing Functions
 
     var mCurrentPhotoPath: String? = null
@@ -268,7 +274,7 @@ class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNa
 
     // Notification Code
 
-    fun setupNotificationAt6am()
+    private fun setupNotificationAt6am()
     {
         val alarmManager: AlarmManager? = getSystemService(Context.ALARM_SERVICE) as AlarmManager
         alarmManager?.let {
@@ -278,7 +284,7 @@ class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNa
             val broadcast = PendingIntent.getBroadcast(this, 100, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
             val cal = Calendar.getInstance()
-            cal.set(Calendar.HOUR_OF_DAY, 10)
+            cal.set(Calendar.HOUR_OF_DAY, 6)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 it.setExact(AlarmManager.RTC_WAKEUP, cal.timeInMillis, broadcast)
             }

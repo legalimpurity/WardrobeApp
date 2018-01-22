@@ -9,5 +9,6 @@ interface MainNavigator : BaseNavigator
 {
     fun openAddder()
     fun updateAdapter(code: Int)
+    fun setRandomCombo(shirt_code: Int, pant_code:Int)
     fun bookMarkCurrentCombo()
 }

@@ -14,6 +14,9 @@ interface ShirtsDao
     @Query("SELECT * FROM Shirts")
     fun loadAll(): List<ShirtNPant>
 
+    @Query("SELECT count(*) FROM Shirts")
+    fun getCount(): Int
+
     @Query("SELECT * FROM Shirts WHERE shirtOrPant = :code")
     fun loadByCode(code: Int?): List<ShirtNPant>
 
