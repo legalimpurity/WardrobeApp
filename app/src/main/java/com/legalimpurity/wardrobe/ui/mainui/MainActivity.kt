@@ -158,8 +158,22 @@ class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNa
     }
 
     override fun openAddder() {
-        dispatchTakePictureIntent()
-//        dispatchGetFromGalleryIntent()
+        var builder: AlertDialog.Builder? = null
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert)
+        } else {
+            builder = AlertDialog.Builder(this)
+        }
+        builder.setTitle(getString(R.string.add_image))
+        .setMessage(getString(R.string.how_image))
+        .setPositiveButton(R.string.camera,   { dialog, which ->
+            dispatchTakePictureIntent()
+        })
+        .setNegativeButton(R.string.gallery,  { dialog, which ->
+            dispatchGetFromGalleryIntent()
+        })
+        .setIcon(android.R.drawable.ic_dialog_alert)
+        .show()
     }
 
     override fun updateAdapter(code: Int) {
@@ -186,7 +200,7 @@ class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNa
         } else {
             builder = AlertDialog.Builder(this)
         }
-        builder.setTitle(getString(R.string.how_shuffle))
+        builder.setTitle(getString(R.string.shuffle))
         .setMessage(getString(R.string.how_shuffle))
         .setPositiveButton(R.string.bookmarks,   { dialog, which ->
                 mMainViewModel.getRandomFavourite()
@@ -213,8 +227,10 @@ class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNa
                 ".jpg", /* suffix */
                 storageDir      /* directory */
         )
+
         AppLogger.d("-------------newFile:"+image.exists())
         AppLogger.d("-------------Path:"+image.path)
+
         // Save a file: path for use with ACTION_VIEW intents
         mCurrentPhotoPath = image.absolutePath
         return image

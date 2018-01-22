@@ -132,8 +132,8 @@ class MainViewModel(dataManager: DataManager, schedulerProvider: SchedulerProvid
     {
         if(shirt_available.get() == "" && pant_available.get() == "") {
             val favCombo = FavCombo()
-            favCombo.pant_id = pantsDataObservableArrayList[pantBeingViewedPosition-1].id
-            favCombo.shirt_id = shirtDataObservableArrayList[shirtBeingViewedPosition-1].id
+            favCombo.pant_id = pantBeingViewedPosition-1
+            favCombo.shirt_id = shirtBeingViewedPosition-1
             getCompositeDisposable()?.add(getDataManager()
                     .addFavCombos(favCombo)
                     .subscribeOn(getSchedulerProvider().io())
@@ -158,6 +158,8 @@ class MainViewModel(dataManager: DataManager, schedulerProvider: SchedulerProvid
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
                 .subscribe({
+                    shirtBeingViewedPosition = it.shirt_id
+                    pantBeingViewedPosition = it.pant_id
                     getNavigator()?.setRandomCombo(it.shirt_id,it.pant_id)
                 }))
     }
@@ -169,6 +171,8 @@ class MainViewModel(dataManager: DataManager, schedulerProvider: SchedulerProvid
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
                 .subscribe({
+                    shirtBeingViewedPosition = it.shirt_id
+                    pantBeingViewedPosition = it.pant_id
                     getNavigator()?.setRandomCombo(it.shirt_id,it.pant_id)
                 }))
     }

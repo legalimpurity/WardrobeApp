@@ -15,9 +15,15 @@
 
     <string name="select_picture">Select Picture</string>
     <string name="bookmark_error">Please make sure you have one shirt and one pant set before taking a bookmark.</string>
+    <string name="shuffle">Shuffle</string>
     <string name="how_shuffle">How would you like to shuffle?</string>
     <string name="bookmarks">Bookmarks</string>
     <string name="random">Random</string>
+
+    <string name="add_image">Add Image</string>
+    <string name="how_image">How would you like to add the image?</string>
+    <string name="gallery">Gallery</string>
+    <string name="camera">Camera</string>
 
     <string name="provider_path_authority" translatable="false">com.legalimpurity.wardrobe.wardrobeprovider</string>
     <string name="storage_path" translatable="false">WardrobePictures/</string>
