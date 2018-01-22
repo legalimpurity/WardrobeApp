@@ -22,3 +22,8 @@ Requiremenets :
 5. 'Favourite' button to mark combination as favourite (need DB support)
 
 6. Notification: app should send a notification for the new combination of shirt and pants everyday in the morning at 6 am.
+
+WireFrames :
+
+[First WireFrame]: https://github.com/legalimpurity/WardrobeApp/blob/master/IMG_3899.JPG.JPG "First WireFrame"
+[Second WireFrame]: https://github.com/legalimpurity/WardrobeApp/blob/master/IMG_3900.JPG "Second WireFrame"
