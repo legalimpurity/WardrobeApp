@@ -18,7 +18,6 @@ import android.support.v4.view.ViewPager
 import android.widget.Toast
 import com.esafirm.imagepicker.features.ImagePicker
 import com.esafirm.imagepicker.model.Image
-import com.esafirm.rximagepicker.RxImagePicker
 import com.legalimpurity.wardrobe.BR
 import com.legalimpurity.wardrobe.R
 import com.legalimpurity.wardrobe.data.models.ShirtNPant
@@ -28,8 +27,6 @@ import com.legalimpurity.wardrobe.ui.mainui.shirtadapter.ShirtAdapter
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
-import rx.Observable
-import rx.functions.Action1
 import java.io.File
 import java.util.*
 import javax.inject.Inject
@@ -57,8 +54,6 @@ class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNa
     @Inject lateinit var mPantAdapter : ShirtAdapter
 
     private var mActivityMainBinding: ActivityMainBinding? = null
-
-    internal var action = Action1<List<Image>> { this.imageAdded(it) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -124,8 +119,8 @@ class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNa
 
             mActivityMainBinding?.shirtViewPager?.postDelayed({
                 mActivityMainBinding?.shirtViewPager?.setCurrentItem(getViewModel().shirtBeingViewedPosition,false)
+                mMainViewModel.checkBookmark()
             }, 100)
-
         })
 
         mMainViewModel.pantsLiveData.observe(this, Observer<List<ShirtNPant>> {
@@ -140,8 +135,10 @@ class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNa
             }
             mActivityMainBinding?.pantViewPager?.postDelayed({
                 mActivityMainBinding?.pantViewPager?.setCurrentItem(getViewModel().pantBeingViewedPosition,false)
+                mMainViewModel.checkBookmark()
             }, 100)
         })
+
     }
 
     // Functions to be implemented by every Activity
@@ -197,6 +194,7 @@ class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNa
     {
         mActivityMainBinding?.pantViewPager?.setCurrentItem(pant_code,true)
         mActivityMainBinding?.shirtViewPager?.setCurrentItem(shirt_code,true)
+        mMainViewModel.checkBookmark()
     }
 
     override fun askWhichRandom() {
@@ -230,7 +228,7 @@ class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNa
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, permissions2, REQUEST_WRITE_ACCESS)
         } else {
-            getImagePickerObservable(this).forEach(action)
+            getImagePickerObservable(this)
         }
     }
 
@@ -265,7 +263,7 @@ class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNa
                 if(whyWantWriteAccess)
                     openCameraFromActivity(this)
                 else
-                    getImagePickerObservable(this).forEach(action)
+                    getImagePickerObservable(this)
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -275,14 +273,15 @@ class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNa
         ImagePicker.cameraOnly().start(activity)
     }
 
-    fun getImagePickerObservable(activity: Activity): Observable<List<Image>> = RxImagePicker.getInstance().start(activity, ImagePicker.create(activity))
+    fun getImagePickerObservable(activity: Activity)
+    {
+        ImagePicker.create(activity).single().start()
+    }
 
     private fun imageAdded(images: List<Image>?) {
         if (images == null) return
-        for(image in images) {
-            val urri = Uri.fromFile(File(image.path))
-            mMainViewModel.pictureAdded(urri.toString())
-        }
+        val urri = Uri.fromFile(File(images[images.size -1].path))
+        mMainViewModel.pictureAdded(urri.toString())
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -290,15 +289,7 @@ class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNa
         if (ImagePicker.shouldHandle(requestCode, resultCode, data)) {
             val images = ImagePicker.getImages(data) as ArrayList<Image>
             imageAdded(images)
-            return
         }
-//        if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK)
-//            mMainViewModel.pictureAdded()
-//        else if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && data != null) {
-//            val urri = fileStorageUtil.getFileOnActivityResult(this,resultCode,data)
-//            mMainViewModel.pictureCreated(urri.toString())
-//            mMainViewModel.pictureAdded()
-//        }
     }
 
     // Notification Code

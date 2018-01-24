@@ -22,4 +22,8 @@ interface FavsDao
 
     @Insert()
     fun insert(favCombo: FavCombo)
+
+    @Query("SELECT count(*) FROM Favs where shirt_id = :shirtID and pant_id = :pantID")
+    fun checkCombo(shirtID: Int, pantID: Int): Int
+
 }

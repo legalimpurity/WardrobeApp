@@ -12,6 +12,7 @@ import io.reactivex.Observable
 interface DataManager : PreferenceHelper, DatabaseHelper
 {
     fun checkRandomComboNotExist(randomCombo: RandomCombo) : Observable<Boolean>
+    fun checkFavComboExist(favCombo: FavCombo) : Observable<Boolean>
     fun giveRandomComboNotGivenBefore() : Observable<RandomCombo>
     fun giveRandomFavCombo() : Observable<FavCombo>
     fun canWeGiveShuffle() : Observable<Boolean>

@@ -15,7 +15,6 @@ import javax.inject.Inject
  */
 class DataManagerImplementation @Inject constructor(val preferencesHelper: PreferenceHelper, val databaseHelper: DatabaseHelper): DataManager
 {
-
     override fun checkRandomComboNotExist(randomCombo: RandomCombo) = databaseHelper.checkRandomCombo(randomCombo)
             .map {
                 false
@@ -25,6 +24,12 @@ class DataManagerImplementation @Inject constructor(val preferencesHelper: Prefe
                     true
             })
             .toObservable()
+
+
+    override fun checkFavComboExist(favCombo: FavCombo) = databaseHelper.checkFavComboCount(favCombo)
+            .map { count ->
+                count != 0
+            }
 
     override fun giveRandomComboNotGivenBefore() = databaseHelper.getShirtsAndPantsCount()
             .map { countt ->
@@ -90,6 +95,7 @@ class DataManagerImplementation @Inject constructor(val preferencesHelper: Prefe
     override fun getFavComboAtPos(pos:Int) = databaseHelper.getFavComboAtPos(pos)
     override fun getFavCombos() = databaseHelper.getFavCombos()
     override fun checkRandomCombo(randomCombo: RandomCombo) = databaseHelper.checkRandomCombo(randomCombo)
+    override fun checkFavComboCount(favCombo: FavCombo) = databaseHelper.checkFavComboCount(favCombo)
     override fun addFavCombos(favCombo: FavCombo) = databaseHelper.addFavCombos(favCombo)
     override fun addAShirt(shirt: ShirtNPant): Observable<Boolean> = databaseHelper.addAShirt(shirt)
 

@@ -57,7 +57,7 @@
             android:id="@+id/fab_favourite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_favorite_border_black_24dp"
+            android:src="@{viewModel.isCurrentSelectionBookmarked ? @drawable/ic_favorite_black_24dp : @drawable/ic_favorite_border_black_24dp}"
             style="@style/fabFavStyle"
             android:onClick="@{() -> viewModel.favCombo()}"/>
 

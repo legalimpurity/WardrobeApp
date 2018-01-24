@@ -22,4 +22,5 @@ interface DatabaseHelper
     fun addFavCombos(favCombo: FavCombo): Observable<Boolean>
     fun addAShirt(shirt: ShirtNPant): Observable<Boolean>
     fun checkRandomCombo(randomCombo: RandomCombo): Single<RandomCombo>
+    fun checkFavComboCount(favCombo: FavCombo): Observable<Int>
 }

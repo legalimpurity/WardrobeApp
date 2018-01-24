@@ -2,6 +2,7 @@ package com.legalimpurity.wardrobe.ui.mainui
 
 import android.arch.lifecycle.MutableLiveData
 import android.databinding.ObservableArrayList
+import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
 import com.legalimpurity.wardrobe.data.DataManager
 import com.legalimpurity.wardrobe.data.models.FavCombo
@@ -18,6 +19,8 @@ class MainViewModel(dataManager: DataManager, schedulerProvider: SchedulerProvid
 
     val shirtDataObservableArrayList = ObservableArrayList<ShirtNPant>()
     val pantsDataObservableArrayList = ObservableArrayList<ShirtNPant>()
+
+    val isCurrentSelectionBookmarked = ObservableBoolean()
 
     val shirtsLiveData: MutableLiveData<List<ShirtNPant>> = MutableLiveData()
     val pantsLiveData: MutableLiveData<List<ShirtNPant>> = MutableLiveData()
@@ -113,27 +116,45 @@ class MainViewModel(dataManager: DataManager, schedulerProvider: SchedulerProvid
     fun setPantPosBeingSeen(pos:Int)
     {
         getDataManager().setLastPantSelected(pos)
-        shirtBeingViewedPosition = pos
+        pantBeingViewedPosition = pos
+        checkBookmark()
     }
 
     fun setShirtPosBeingSeen(pos:Int)
     {
         getDataManager().setLastShirtSelected(pos)
-        pantBeingViewedPosition = pos
+        shirtBeingViewedPosition = pos
+
+        checkBookmark()
+    }
+
+    fun checkBookmark()
+    {
+        val favCombo = FavCombo()
+        favCombo.pant_id = pantBeingViewedPosition
+        favCombo.shirt_id = shirtBeingViewedPosition
+        getCompositeDisposable()?.add(getDataManager()
+                .checkFavComboExist(favCombo)
+                .subscribeOn(getSchedulerProvider().io())
+                .observeOn(getSchedulerProvider().ui())
+                .subscribe({ exist ->
+                    isCurrentSelectionBookmarked.set(exist)
+                }))
     }
 
     fun favCombo()
     {
         if(shirt_available.get() == "" && pant_available.get() == "") {
             val favCombo = FavCombo()
-            favCombo.pant_id = pantBeingViewedPosition-1
-            favCombo.shirt_id = shirtBeingViewedPosition-1
+            favCombo.pant_id = pantBeingViewedPosition
+            favCombo.shirt_id = shirtBeingViewedPosition
             getCompositeDisposable()?.add(getDataManager()
                     .addFavCombos(favCombo)
                     .subscribeOn(getSchedulerProvider().io())
                     .observeOn(getSchedulerProvider().ui())
                     .subscribe({
-                        getNavigator()?.bookMarkCurrentCombo()
+                        if(it)
+                            getNavigator()?.bookMarkCurrentCombo()
                     }))
         }
         else

@@ -17,6 +17,8 @@ class DatabaseHelperImplementation @Inject constructor(private val mAppDatabase:
 
     override fun checkRandomCombo(randomCombo: RandomCombo) = mAppDatabase.RandomDao().loadOne(randomCombo.shirt_id,randomCombo.pant_id)
 
+    override fun checkFavComboCount(favCombo: FavCombo) = Observable.fromCallable<Int> { mAppDatabase.FavsComboDao().checkCombo(favCombo.shirt_id,favCombo.pant_id) }
+
     override fun addFavCombos(favCombo: FavCombo) = Observable.fromCallable {
         mAppDatabase.FavsComboDao().insert(favCombo)
         true
