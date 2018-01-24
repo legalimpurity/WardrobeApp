@@ -17,13 +17,12 @@ interface FavsDao
     @Query("SELECT count(*) FROM Favs")
     fun getCount(): Int
 
-    @Query("SELECT * FROM Favs WHERE id = :pos limit 1")
-    fun loadByPos(pos: Int?): FavCombo
-
     @Insert()
     fun insert(favCombo: FavCombo)
 
+    @Query("delete from Favs WHERE shirt_id = :shirt_id and pant_id = :pant_id")
+    fun delete(shirt_id: Int,pant_id:Int)
+
     @Query("SELECT count(*) FROM Favs where shirt_id = :shirtID and pant_id = :pantID")
     fun checkCombo(shirtID: Int, pantID: Int): Int
-
 }

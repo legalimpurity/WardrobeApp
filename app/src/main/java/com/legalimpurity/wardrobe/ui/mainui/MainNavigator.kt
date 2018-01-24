@@ -11,5 +11,4 @@ interface MainNavigator : BaseNavigator
     fun updateAdapter(code: Int)
     fun setRandomCombo(shirt_code: Int, pant_code:Int)
     fun askWhichRandom()
-    fun bookMarkCurrentCombo()
 }

@@ -63,7 +63,7 @@ class DataManagerImplementation @Inject constructor(val preferencesHelper: Prefe
                 rnd.nextInt(countt)
             }
             .map { randomNumberPos ->
-                getFavComboAtPos(randomNumberPos).blockingFirst()
+                getFavCombos().blockingFirst()[randomNumberPos]
             }
 
     // Minimum one shirt and one pant should be there, before we try to shuffle.
@@ -92,12 +92,12 @@ class DataManagerImplementation @Inject constructor(val preferencesHelper: Prefe
     override fun getShirtsAndPantsCount() = databaseHelper.getShirtsAndPantsCount()
     override fun getFavsCount() = databaseHelper.getFavsCount()
     override fun getTypeCount(code: Int) = databaseHelper.getTypeCount(code)
-    override fun getFavComboAtPos(pos:Int) = databaseHelper.getFavComboAtPos(pos)
     override fun getFavCombos() = databaseHelper.getFavCombos()
     override fun checkRandomCombo(randomCombo: RandomCombo) = databaseHelper.checkRandomCombo(randomCombo)
     override fun checkFavComboCount(favCombo: FavCombo) = databaseHelper.checkFavComboCount(favCombo)
     override fun addFavCombos(favCombo: FavCombo) = databaseHelper.addFavCombos(favCombo)
     override fun addAShirt(shirt: ShirtNPant): Observable<Boolean> = databaseHelper.addAShirt(shirt)
 
+    override fun removeFavCombos(favCombo: FavCombo) = databaseHelper.removeFavCombos(favCombo)
 
 }

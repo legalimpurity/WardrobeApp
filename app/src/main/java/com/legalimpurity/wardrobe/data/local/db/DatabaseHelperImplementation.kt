@@ -24,9 +24,15 @@ class DatabaseHelperImplementation @Inject constructor(private val mAppDatabase:
         true
     }
 
+    override fun removeFavCombos(favCombo: FavCombo) = Observable.fromCallable {
+        mAppDatabase.FavsComboDao().delete(favCombo.shirt_id,favCombo.pant_id)
+        true
+    }
+
+
+
     override fun getFavsCount() = Observable.fromCallable<Int> { mAppDatabase.FavsComboDao().getCount() }
 
-    override fun getFavComboAtPos(pos: Int) = Observable.fromCallable<FavCombo> { mAppDatabase.FavsComboDao().loadByPos(pos) }
     override fun getLocalShirts(code: Int) = Observable.fromCallable<List<ShirtNPant>> { mAppDatabase.ShirtsDao().loadByCode(code) }
     override fun getShirtsAndPantsCount() = Observable.fromCallable<Int> { mAppDatabase.ShirtsDao().getCount() }
 

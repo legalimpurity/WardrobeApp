@@ -186,10 +186,6 @@ class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNa
             mPantAdapter.notifyDataSetChanged()
     }
 
-    override fun bookMarkCurrentCombo() {
-        mActivityMainBinding?.fabFavourite?.setImageDrawable(resources.getDrawable(R.drawable.ic_favorite_black_24dp))
-    }
-
     override fun setRandomCombo(shirt_code: Int, pant_code:Int)
     {
         mActivityMainBinding?.pantViewPager?.setCurrentItem(pant_code,true)

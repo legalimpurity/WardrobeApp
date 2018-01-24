@@ -124,7 +124,6 @@ class MainViewModel(dataManager: DataManager, schedulerProvider: SchedulerProvid
     {
         getDataManager().setLastShirtSelected(pos)
         shirtBeingViewedPosition = pos
-
         checkBookmark()
     }
 
@@ -145,17 +144,31 @@ class MainViewModel(dataManager: DataManager, schedulerProvider: SchedulerProvid
     fun favCombo()
     {
         if(shirt_available.get() == "" && pant_available.get() == "") {
-            val favCombo = FavCombo()
-            favCombo.pant_id = pantBeingViewedPosition
-            favCombo.shirt_id = shirtBeingViewedPosition
-            getCompositeDisposable()?.add(getDataManager()
-                    .addFavCombos(favCombo)
-                    .subscribeOn(getSchedulerProvider().io())
-                    .observeOn(getSchedulerProvider().ui())
-                    .subscribe({
-                        if(it)
-                            getNavigator()?.bookMarkCurrentCombo()
-                    }))
+            if (isCurrentSelectionBookmarked.get()) {
+                val favCombo = FavCombo()
+                favCombo.pant_id = pantBeingViewedPosition
+                favCombo.shirt_id = shirtBeingViewedPosition
+                getCompositeDisposable()?.add(getDataManager()
+                        .removeFavCombos(favCombo)
+                        .subscribeOn(getSchedulerProvider().io())
+                        .observeOn(getSchedulerProvider().ui())
+                        .subscribe({
+                            if (it)
+                                isCurrentSelectionBookmarked.set(false)
+                        }))
+            } else {
+                val favCombo = FavCombo()
+                favCombo.pant_id = pantBeingViewedPosition
+                favCombo.shirt_id = shirtBeingViewedPosition
+                getCompositeDisposable()?.add(getDataManager()
+                        .addFavCombos(favCombo)
+                        .subscribeOn(getSchedulerProvider().io())
+                        .observeOn(getSchedulerProvider().ui())
+                        .subscribe({
+                            if (it)
+                                isCurrentSelectionBookmarked.set(true)
+                        }))
+            }
         }
         else
             getNavigator()?.apiError(Throwable("BookMarkBeforeAddingDataNotAllowed"))
@@ -191,7 +204,7 @@ class MainViewModel(dataManager: DataManager, schedulerProvider: SchedulerProvid
     fun getRandomFavourite()
     {
         getCompositeDisposable()?.add(getDataManager()
-                .giveRandomComboNotGivenBefore()
+                .giveRandomFavCombo()
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
                 .subscribe({

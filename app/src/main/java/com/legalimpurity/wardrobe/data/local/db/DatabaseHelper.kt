@@ -17,9 +17,9 @@ interface DatabaseHelper
     fun getTypeCount(code:Int): Observable<Int>
     fun getFavsCount(): Observable<Int>
     fun getFavCombos(): Observable<List<FavCombo>>
-    fun getFavComboAtPos(pos: Int): Observable<FavCombo>
 
     fun addFavCombos(favCombo: FavCombo): Observable<Boolean>
+    fun removeFavCombos(favCombo: FavCombo): Observable<Boolean>
     fun addAShirt(shirt: ShirtNPant): Observable<Boolean>
     fun checkRandomCombo(randomCombo: RandomCombo): Single<RandomCombo>
     fun checkFavComboCount(favCombo: FavCombo): Observable<Int>
