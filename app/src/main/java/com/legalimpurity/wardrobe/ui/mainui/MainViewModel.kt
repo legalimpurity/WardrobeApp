@@ -32,7 +32,6 @@ class MainViewModel(dataManager: DataManager, schedulerProvider: SchedulerProvid
     // 1 = shirt
     // 2 = pant
     var shirtOrPantPic = 0
-    var tempPicturePath = ""
 
     init {
         fetchShirtsListMix()
@@ -84,18 +83,18 @@ class MainViewModel(dataManager: DataManager, schedulerProvider: SchedulerProvid
     fun addPantPicture()
     {
         shirtOrPantPic = 2
-        getNavigator()?.openAddder()
+        getNavigator()?.openAdder()
     }
 
     fun addShirtPicture()
     {
         shirtOrPantPic = 1
-        getNavigator()?.openAddder()
+        getNavigator()?.openAdder()
     }
 
-    fun pictureAdded() {
+    fun pictureAdded(pictureURI: String) {
         val shirtNPant = ShirtNPant()
-        shirtNPant.shirtnPantPath = tempPicturePath
+        shirtNPant.shirtnPantPath = pictureURI
         shirtNPant.shirtOrPant = shirtOrPantPic
         getCompositeDisposable()?.add(getDataManager()
                 .addAShirt(shirtNPant)
@@ -108,11 +107,6 @@ class MainViewModel(dataManager: DataManager, schedulerProvider: SchedulerProvid
                         fetchPantsListMix()
                     getNavigator()?.updateAdapter(shirtOrPantPic)
                 }))
-    }
-
-    fun pictureCreated(pictureURI: String)
-    {
-        tempPicturePath = pictureURI
     }
 
     // We can rely on positions cause there is no delete functionality in the app.

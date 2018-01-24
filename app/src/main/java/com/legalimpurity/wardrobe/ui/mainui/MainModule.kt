@@ -3,7 +3,6 @@ package com.legalimpurity.wardrobe.ui.mainui
 import com.legalimpurity.wardrobe.data.DataManager
 import com.legalimpurity.wardrobe.di.modules.appmoduleprovides.rx.SchedulerProvider
 import com.legalimpurity.wardrobe.ui.mainui.shirtadapter.ShirtAdapter
-import com.legalimpurity.wardrobe.util.FileStorageUtil
 import dagger.Module
 import dagger.Provides
 import io.reactivex.disposables.CompositeDisposable
@@ -19,8 +18,4 @@ class MainModule
 
     @Provides
     fun shirtAdapterProvider(main: MainActivity) : ShirtAdapter = ShirtAdapter(main.supportFragmentManager)
-
-    @Provides
-    fun provideFileStoreageUtil() = FileStorageUtil()
-
 }

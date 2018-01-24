@@ -1,26 +1,36 @@
 package com.legalimpurity.wardrobe.ui.mainui
 
+import android.Manifest
+import android.app.Activity
 import android.app.AlarmManager
 import android.app.AlertDialog
 import android.app.PendingIntent
 import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
 import android.widget.Toast
+import com.esafirm.imagepicker.features.ImagePicker
+import com.esafirm.imagepicker.model.Image
+import com.esafirm.rximagepicker.RxImagePicker
 import com.legalimpurity.wardrobe.BR
 import com.legalimpurity.wardrobe.R
 import com.legalimpurity.wardrobe.data.models.ShirtNPant
 import com.legalimpurity.wardrobe.databinding.ActivityMainBinding
 import com.legalimpurity.wardrobe.ui.base.BaseActivity
 import com.legalimpurity.wardrobe.ui.mainui.shirtadapter.ShirtAdapter
-import com.legalimpurity.wardrobe.util.FileStorageUtil
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
+import rx.Observable
+import rx.functions.Action1
+import java.io.File
 import java.util.*
 import javax.inject.Inject
 
@@ -36,8 +46,8 @@ import javax.inject.Inject
  */
 class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNavigator, HasSupportFragmentInjector
 {
-    val REQUEST_IMAGE_CAPTURE = 1
-    val RESULT_LOAD_IMAGE = 2
+    val REQUEST_WRITE_ACCESS = 1
+    val REQUEST_CAMERA_ACCESS = 3
 
     @Inject lateinit var mMainViewModel: MainViewModel
 
@@ -46,9 +56,9 @@ class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNa
     @Inject lateinit var mShirtAdapter : ShirtAdapter
     @Inject lateinit var mPantAdapter : ShirtAdapter
 
-    @Inject lateinit var fileStorageUtil : FileStorageUtil
-
     private var mActivityMainBinding: ActivityMainBinding? = null
+
+    internal var action = Action1<List<Image>> { this.imageAdded(it) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -153,7 +163,7 @@ class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNa
             Toast.makeText(this,getString(R.string.shuffle_error),Toast.LENGTH_LONG).show()
     }
 
-    override fun openAddder() {
+    override fun openAdder() {
         var builder: AlertDialog.Builder? = null
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             builder = AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert)
@@ -163,12 +173,7 @@ class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNa
         builder.setTitle(getString(R.string.add_image))
         .setMessage(getString(R.string.how_image))
         .setPositiveButton(R.string.camera,   { _, _ ->
-            fileStorageUtil.dispatchTakePictureIntent(this,REQUEST_IMAGE_CAPTURE,object : FileStorageUtil.PictureFileCreated
-            {
-                override fun pictureCreated(strr:String){
-                    mMainViewModel.pictureCreated(strr)
-                }
-            })
+            dispatchGetPictureIntent()
         })
         .setNegativeButton(R.string.gallery,  { _, _ ->
             dispatchGetFromGalleryIntent()
@@ -214,20 +219,86 @@ class MainActivity  : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNa
     }
 
 
+    // false = imagepicker
+    // true = camera
+    var whyWantWriteAccess:Boolean = false
+
     fun dispatchGetFromGalleryIntent()
     {
-        fileStorageUtil.openImageChooserActivityFromActivity(this,RESULT_LOAD_IMAGE)
+        whyWantWriteAccess = false
+        val permissions2 = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, permissions2, REQUEST_WRITE_ACCESS)
+        } else {
+            getImagePickerObservable(this).forEach(action)
+        }
+    }
+
+    fun dispatchGetPictureIntent()
+    {
+        whyWantWriteAccess = true
+        val permissions2 = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, permissions2, REQUEST_WRITE_ACCESS)
+        }
+        else
+        {
+            // If writing permission is there, check camera permission.
+            val permissions = arrayOf(Manifest.permission.CAMERA)
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, permissions, REQUEST_CAMERA_ACCESS)
+            } else {
+                openCameraFromActivity(this)
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        if (requestCode == REQUEST_CAMERA_ACCESS) {
+            if (grantResults.size != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                openCameraFromActivity(this)
+            }
+        }
+
+        if (requestCode == REQUEST_WRITE_ACCESS) {
+            if (grantResults.size != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if(whyWantWriteAccess)
+                    openCameraFromActivity(this)
+                else
+                    getImagePickerObservable(this).forEach(action)
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
+    fun openCameraFromActivity(activity: Activity) {
+        ImagePicker.cameraOnly().start(activity)
+    }
+
+    fun getImagePickerObservable(activity: Activity): Observable<List<Image>> = RxImagePicker.getInstance().start(activity, ImagePicker.create(activity))
+
+    private fun imageAdded(images: List<Image>?) {
+        if (images == null) return
+        for(image in images) {
+            val urri = Uri.fromFile(File(image.path))
+            mMainViewModel.pictureAdded(urri.toString())
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK)
-            mMainViewModel.pictureAdded()
-        else if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && data != null) {
-            val urri = fileStorageUtil.getFileOnActivityResult(this,resultCode,data)
-            mMainViewModel.pictureCreated(urri.toString())
-            mMainViewModel.pictureAdded()
+        if (ImagePicker.shouldHandle(requestCode, resultCode, data)) {
+            val images = ImagePicker.getImages(data) as ArrayList<Image>
+            imageAdded(images)
+            return
         }
+//        if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK)
+//            mMainViewModel.pictureAdded()
+//        else if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && data != null) {
+//            val urri = fileStorageUtil.getFileOnActivityResult(this,resultCode,data)
+//            mMainViewModel.pictureCreated(urri.toString())
+//            mMainViewModel.pictureAdded()
+//        }
     }
 
     // Notification Code

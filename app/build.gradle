@@ -7,7 +7,7 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 27
     defaultConfig {
         applicationId "com.legalimpurity.wardrobe"
         minSdkVersion rootProject.ext.minSdkVersion
@@ -25,6 +25,9 @@ android {
     }
     dataBinding {
         enabled = true
+    }
+    packagingOptions {
+        exclude 'META-INF/rxjava.properties'
     }
 }
 
@@ -82,6 +85,9 @@ dependencies {
     implementation "com.jakewharton.timber:timber:$rootProject.timberVersion"
 
     // database
-    compile "android.arch.persistence.room:rxjava2:$rootProject.roomDatabase"
+    implementation "android.arch.persistence.room:rxjava2:$rootProject.roomDatabase"
     kapt "android.arch.persistence.room:compiler:$rootProject.roomDatabase"
+
+    // image capture
+    implementation 'com.github.esafirm.android-image-picker:rximagepicker:1.12.0'
 }

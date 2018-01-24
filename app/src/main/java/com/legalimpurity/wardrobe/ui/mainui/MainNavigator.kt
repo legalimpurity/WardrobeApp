@@ -7,7 +7,7 @@ import com.legalimpurity.wardrobe.ui.base.BaseNavigator
  */
 interface MainNavigator : BaseNavigator
 {
-    fun openAddder()
+    fun openAdder()
     fun updateAdapter(code: Int)
     fun setRandomCombo(shirt_code: Int, pant_code:Int)
     fun askWhichRandom()
