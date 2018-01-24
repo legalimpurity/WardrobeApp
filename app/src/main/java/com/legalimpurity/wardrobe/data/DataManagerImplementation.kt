@@ -31,18 +31,24 @@ class DataManagerImplementation @Inject constructor(val preferencesHelper: Prefe
                 count != 0
             }
 
-    override fun giveRandomComboNotGivenBefore() = databaseHelper.getShirtsAndPantsCount()
-            .map { countt ->
+    // Not given not given before.
+    override fun giveRandomComboNotGivenBefore() = Observable.zip(
+            databaseHelper.getTypeCount(1),
+            databaseHelper.getTypeCount(2),
+            BiFunction { shirtsCount:Int, pantsCount:Int ->
+                val totalCount = shirtsCount+pantsCount
                 val returner = RandomCombo()
-                val maxNumberOfCombinations = countt * (countt-1)/2
+                val maxNumberOfCombinations = totalCount * (totalCount-1)/2
                 val rnd = Random()
-                // autoincrement starts from 1
-                val rand1 = rnd.nextInt(countt - 1) + 1
-                val rand2 = rnd.nextInt(countt - 1) + 1
-                returner.pant_id = rand1
-                returner.shirt_id = rand2
+                val shirtRandPos = rnd.nextInt(shirtsCount - 1) + 1
+                val pantRandPos = rnd.nextInt(pantsCount - 1) + 1
+                returner.pant_id = pantRandPos
+                returner.shirt_id = shirtRandPos
                 returner
             }
+    )
+
+    // Section to check recursively if the suffle arragement has been suggested before or not, was not able to implement cause studio was identifying recursive calling.
 //            .map { randomCombo ->
 //                Observable.zip(
 //                        checkRandomComboNotExist(randomCombo),
